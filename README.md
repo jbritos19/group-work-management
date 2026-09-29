@@ -103,7 +103,168 @@ Administrators can import groups that have already been organized.
 
 The system supports multiple input formats, including:
 
-```text
 John Smith, 1234567, 0981 123 456
 Maria Gomez; 2345678
 3. Carlos Duarte 3456789 0982 333 444
+
+Excel columns can also be copied directly.
+
+Before importing, the application validates each row and identifies:
+
+New students
+Existing students
+Invalid entries
+Missing IDs
+Duplicate IDs
+Incomplete names
+
+The import process uses an all-or-nothing approach: if any row is invalid, no records are created.
+
+Security & Privacy
+
+The application was designed with a backend architecture that keeps sensitive student information protected.
+
+Student Privacy
+
+Student ID numbers and phone numbers are only accessible to administrators.
+
+The student-facing application does not expose sensitive personal information.
+
+Database Protection
+
+Database operations are handled through a dedicated backend function instead of exposing direct database access to the public client.
+
+Group Locking
+
+Administrators can lock confirmed groups to prevent unauthorized changes.
+
+Activity Logging
+
+Important student and administrative actions are recorded with timestamps for accountability and troubleshooting.
+
+Concurrent Group Assignment
+
+The system prevents a group from exceeding the maximum of 12 members, even when multiple users attempt to join the last available spot at the same time.
+
+Technical Architecture
+
+The project uses a separated frontend and backend structure.
+
+groups-project/
+├── supabase/
+│   ├── migrations/
+│   └── functions/
+│       └── group-app/
+│           └── index.ts
+│
+└── web/
+    ├── index.html
+    ├── admin.html
+    └── config.js
+Frontend
+
+The web directory contains the client-facing application:
+
+index.html — Student application
+admin.html — Administrative interface
+config.js — Frontend configuration
+Backend
+
+The backend logic is implemented through a Supabase Edge Function responsible for handling student and administrative operations.
+
+Student operations include:
+
+Enter
+Register
+Logout
+Join group
+Create group
+Leave group
+Update profile
+
+Administrative operations include:
+
+Authentication
+Student management
+Group management
+Group imports
+Group locking
+Activity logging
+Settings management
+Database
+
+The application uses Supabase and PostgreSQL as the backend data layer.
+
+The database includes entities for:
+
+Students
+Groups
+Topics
+Group memberships
+Activity history
+
+Database access is restricted through backend functions and row-level security policies.
+
+Testing
+
+The second version of the system was tested using a local environment with a replica of the production database structure.
+
+The test suites covered:
+
+Database behavior
+HTTP API operations
+Student application
+Administrative panel
+Concurrent group assignment
+Group imports
+Locked groups
+Privacy controls
+Migration and rollback behavior
+
+The documented test results include:
+
+69/69 database tests
+31/31 API tests
+49/49 browser tests
+Deployment
+
+The student-facing application is deployed using Netlify.
+
+Production URL:
+
+https://grupostrabajopractico.netlify.app/
+
+The backend is deployed using Supabase Edge Functions.
+
+Project Highlights
+
+This project demonstrates experience in:
+
+Building real-world web applications
+Designing systems around real user requirements
+Developing student-facing workflows
+Building administrative dashboards
+Backend API development
+PostgreSQL and Supabase integration
+Data validation
+Access control and privacy
+Activity logging
+Concurrent operation handling
+Production deployment
+Future Improvements
+User authentication with stronger identity verification
+Personalized student dashboards
+Real-time group updates
+Email or WhatsApp notifications
+Advanced analytics
+Role-based administrative permissions
+Improved mobile experience
+Automated deployment pipelines
+Author
+
+Juan Manuel Britos Rugilo
+
+Independent Software Developer
+Systems Analysis Student
+
+GitHub: https://github.com/jbritos19
