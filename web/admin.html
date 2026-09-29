@@ -1,0 +1,801 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Panel administrativo — Grupos del trabajo práctico</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#1C2B5A">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231C2B5A'/%3E%3Cpath d='M16 6l8 3v6c0 5-3.4 9-8 11-4.6-2-8-6-8-11V9z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<style>
+:root {
+  --tinta: #1C2B5A; --tinta-2: #2A3D78;
+  --papel: #F3F5FA; --hoja: #FFFFFF; --texto: #141A2E; --suave: #586182; --linea: #DCE1EC; --foco: #3D63DD;
+  --verde: #1E7F46; --verde-bg: #E3F3E9;
+  --amar: #7A5A00;  --amar-bg: #FFF3CC;
+  --rojo: #B3261E;  --rojo-bg: #FCE6E4;
+  --gris-bg: #E9ECF3;
+  --display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tinta: #16214A; --tinta-2: #8EA6FF;
+    --papel: #0D1224; --hoja: #151C35; --texto: #E7EBF6; --suave: #9CA6C4; --linea: #28314F; --foco: #8EA6FF;
+    --verde: #7FD6A0; --verde-bg: #173A28; --amar: #F5D36B; --amar-bg: #3A3113;
+    --rojo: #FF9B93; --rojo-bg: #43201F; --gris-bg: #222A45;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--papel); color: var(--texto); font: 400 .98rem/1.45 var(--body); }
+button, input, select { font: inherit; color: inherit; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--foco); outline-offset: 2px; }
+.band { background: var(--tinta); color: #fff; }
+.band::before { content: ""; display: block; height: 5px; background: linear-gradient(to bottom, #D52B1E 0 33.3%, #fff 33.3% 66.6%, #0038A8 66.6%); }
+.band-inner { max-width: 1100px; margin: 0 auto; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.title { margin: 0; font-family: var(--display); text-transform: uppercase; line-height: .95; }
+.title .l1 { display: block; font-size: clamp(1.6rem, 6vw, 2.3rem); font-weight: 700; }
+.title .l2 { display: block; font-size: 1.05rem; font-weight: 500; letter-spacing: .12em; opacity: .8; margin-top: 3px; }
+.band .btn { color: #fff; border-color: rgba(255,255,255,.5); }
+main { max-width: 1100px; margin: 0 auto; padding: 14px 16px 60px; }
+.stack > * + * { margin-top: 12px; }
+.panel { background: var(--hoja); border: 1px solid var(--linea); border-radius: 12px; padding: 14px; }
+h2 { font-family: var(--display); font-size: 1.6rem; margin: 0; line-height: 1.05; }
+h3 { font-family: var(--display); font-size: 1.3rem; margin: 0; line-height: 1.1; }
+.muted { color: var(--suave); }
+.small { font-size: .88rem; }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; padding: 0 13px; border-radius: 9px; border: 1.5px solid var(--linea); background: transparent; font-weight: 700; cursor: pointer; text-decoration: none; white-space: nowrap; }
+.btn:hover { border-color: var(--suave); }
+.btn-primary { background: var(--tinta); border-color: var(--tinta); color: #fff; }
+@media (prefers-color-scheme: dark) { .btn-primary { background: #3552B8; border-color: #3552B8; } }
+.btn-danger { color: var(--rojo); border-color: color-mix(in srgb, var(--rojo) 55%, transparent); }
+.btn-sm { min-height: 34px; padding: 0 10px; font-size: .88rem; }
+.btn[disabled] { opacity: .5; cursor: not-allowed; }
+.row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+body.busy .btn { pointer-events: none; opacity: .7; }
+
+.tabs { position: sticky; top: 0; z-index: 5; background: var(--papel); padding: 8px 0; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tabs button { flex: 1 0 auto; min-height: 44px; border-radius: 9px; border: 1.5px solid var(--linea); background: var(--hoja); font-weight: 700; cursor: pointer; padding: 0 12px; }
+.tabs button[aria-selected="true"] { background: var(--tinta); border-color: var(--tinta); color: #fff; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips button { min-height: 36px; border-radius: 999px; border: 1.5px solid var(--linea); background: var(--hoja); padding: 0 12px; cursor: pointer; font-weight: 700; font-size: .9rem; }
+.chips button[aria-pressed="true"] { border-color: var(--tinta); background: color-mix(in srgb, var(--tinta) 12%, var(--hoja)); }
+@media (prefers-color-scheme: dark) { .chips button[aria-pressed="true"] { border-color: var(--tinta-2); } }
+input[type=search], .field input, select { width: 100%; min-height: 46px; border-radius: 9px; border: 1.5px solid var(--linea); background: var(--hoja); padding: 0 12px; }
+.field { display: grid; gap: 4px; }
+.field label { font-weight: 700; }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+.stat { background: var(--hoja); border: 1px solid var(--linea); border-radius: 12px; padding: 12px; }
+.stat b { display: block; font-family: var(--display); font-size: 2.3rem; line-height: 1; }
+.stat.warn b { color: var(--rojo); }
+
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--linea); vertical-align: top; }
+th { font-size: .85rem; color: var(--suave); }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.scroll { overflow-x: auto; }
+
+.list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.stu { background: var(--hoja); border: 1px solid var(--linea); border-radius: 12px; padding: 12px; display: grid; gap: 6px; }
+.stu-name { font-weight: 700; font-size: 1.05rem; }
+.kv { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: .93rem; }
+.kv span b { color: var(--suave); font-weight: 400; margin-right: 4px; }
+.badge { display: inline-block; font-size: .8rem; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: var(--gris-bg); }
+.b-verde { background: var(--verde-bg); color: var(--verde); }
+.b-amar { background: var(--amar-bg); color: var(--amar); }
+.b-rojo { background: var(--rojo-bg); color: var(--rojo); }
+
+.topic-block { display: grid; gap: 8px; }
+.topic-block + .topic-block { margin-top: 18px; }
+.topic-h { display: flex; justify-content: space-between; align-items: flex-end; gap: 10px; flex-wrap: wrap; border-bottom: 2px solid var(--texto); padding-bottom: 6px; }
+.grid-groups { display: grid; gap: 8px; }
+@media (min-width: 860px) { .grid-groups { grid-template-columns: 1fr 1fr; } }
+.grp { background: var(--hoja); border: 1px solid var(--linea); border-radius: 12px; padding: 12px; display: grid; gap: 8px; align-content: start; }
+.grp-h { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.mem { margin: 0; padding-left: 1.5em; display: grid; gap: 2px; }
+.mem li { padding: 6px 0; border-bottom: 1px solid var(--linea); }
+.mem li:last-child { border-bottom: 0; }
+.mem li > * { vertical-align: top; }
+.mem-info { display: inline-grid; gap: 1px; min-width: 0; }
+.mem-info .small { color: var(--suave); }
+.mem-info .small a { margin-left: 10px; }
+.mem-act { float: right; flex-wrap: nowrap; margin-left: 8px; }
+
+.switch { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; }
+.switch + .switch { border-top: 1px solid var(--linea); }
+.toggle { min-width: 118px; }
+.toggle[aria-pressed="true"] { background: var(--verde-bg); color: var(--verde); border-color: transparent; }
+.toggle[aria-pressed="false"] { background: var(--rojo-bg); color: var(--rojo); border-color: transparent; }
+
+.login { max-width: 420px; margin: 30px auto; }
+.error { background: var(--rojo-bg); color: var(--rojo); padding: 10px 12px; border-radius: 9px; font-weight: 700; }
+.error:empty { display: none; }
+dialog { border: 0; border-radius: 14px; padding: 0; width: min(480px, calc(100vw - 24px)); background: var(--hoja); color: var(--texto); }
+dialog::backdrop { background: rgba(10,14,30,.55); }
+dialog form { padding: 18px; }
+dialog .row { justify-content: flex-end; margin-top: 14px; }
+.pin-show { font-family: var(--display); font-size: 3rem; letter-spacing: .15em; text-align: center; margin: 8px 0; }
+.b-lock { background: var(--texto); color: var(--papel); }
+textarea { width: 100%; min-height: 170px; border-radius: 9px; border: 1.5px solid var(--linea); background: var(--hoja); padding: 10px 12px; font: inherit; line-height: 1.5; resize: vertical; }
+.check { display: flex; gap: 10px; align-items: flex-start; font-weight: 700; }
+.check input { width: 22px; height: 22px; margin-top: 1px; flex: none; }
+dialog.wide { width: min(760px, calc(100vw - 16px)); }
+.prev td { font-size: .88rem; }
+.prev tr.bad td { background: var(--rojo-bg); }
+.prev .bad-msg { color: var(--rojo); font-weight: 700; }
+.log { list-style: none; margin: 0; padding: 0; }
+.log li { padding: 9px 0; border-bottom: 1px solid var(--linea); display: grid; gap: 1px; }
+.log time { font-size: .82rem; color: var(--suave); font-variant-numeric: tabular-nums; }
+.log .det { font-size: .9rem; color: var(--suave); }
+#toast { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); max-width: calc(100vw - 24px); background: var(--texto); color: var(--papel); padding: 11px 15px; border-radius: 10px; font-weight: 700; opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 50; }
+#toast.show { opacity: 1; }
+#toast.err { background: #C62828; color: #fff; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<header class="band">
+  <div class="band-inner">
+    <h1 class="title"><span class="l1">Organización de grupos</span><span class="l2">Panel administrativo</span></h1>
+    <div class="row" id="top-actions" hidden>
+      <button class="btn btn-sm" id="btn-refresh" type="button">Actualizar</button>
+      <button class="btn btn-sm" id="btn-logout" type="button">Salir</button>
+    </div>
+  </div>
+</header>
+<main id="app"></main>
+<div id="toast" role="status" aria-live="polite"></div>
+<dialog id="dlg"><form method="dialog" id="dlg-form"></form></dialog>
+
+<script src="config.js"></script>
+<script>
+(() => {
+"use strict";
+const CFG = window.APP_CONFIG || {};
+const API = CFG.FUNCTION_URL;
+const POLL_MS = Math.max(5, CFG.ADMIN_POLL_SECONDS || 15) * 1000;
+const KEY = "tpgrupos.admin";
+const $ = (s) => document.querySelector(s);
+
+// Token solo en sessionStorage: se borra al cerrar la pestaña
+let memTok = null;
+const tok = {
+  get() { try { return sessionStorage.getItem(KEY); } catch { return memTok; } },
+  set(v) { memTok = v || null; try { v ? sessionStorage.setItem(KEY, v) : sessionStorage.removeItem(KEY); } catch { /* sin almacenamiento */ } },
+};
+
+class ApiError extends Error { constructor(code, m) { super(m); this.code = code; } }
+async function api(action, payload = {}) {
+  const headers = { "Content-Type": "application/json" };
+  const sentTok = tok.get();
+  if (sentTok) headers["x-admin-token"] = sentTok;
+  let res;
+  try { res = await fetch(API, { method: "POST", headers, body: JSON.stringify({ ...payload, action }) }); }
+  catch { throw new ApiError("NETWORK", "Sin conexión con el servidor."); }
+  let body;
+  try { body = await res.json(); } catch { throw new ApiError("INTERNAL", "Respuesta inesperada del servidor."); }
+  if (!body.ok) {
+    if (body.error.code === "NOT_AUTHENTICATED" && action !== "admin_login" && tok.get() === sentTok) { tok.set(null); showLogin("La sesión terminó. Ingresá de nuevo."); }
+    throw new ApiError(body.error.code, body.error.message);
+  }
+  return body.data;
+}
+
+function h(tag, attrs, ...kids) {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (v == null || v === false) continue;
+    if (k === "class") el.className = v;
+    else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+    else if (v === true) el.setAttribute(k, "");
+    else el.setAttribute(k, String(v));
+  }
+  for (const c of kids.flat(Infinity)) {
+    if (c == null || c === false) continue;
+    el.append(c instanceof Node ? c : document.createTextNode(String(c)));
+  }
+  return el;
+}
+const fold = (s) => String(s || "").normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
+function toast(m, err) {
+  const t = $("#toast"); t.textContent = m; t.className = "show" + (err ? " err" : "");
+  clearTimeout(toast.i); toast.i = setTimeout(() => (t.className = ""), err ? 5500 : 3000);
+}
+
+// ------------------------------------------------------------ datos
+let D = null;
+let L = { min: 8, max: 12 };
+let tab = "resumen";
+let stuQuery = "", stuFilter = "todos", grpFilter = "todos", grpQuery = "", logQuery = "";
+let busy = false, timer = null;
+
+function idx() {
+  const topicById = new Map(D.topics.map((t) => [String(t.id), t]));
+  const groupById = new Map(D.groups.map((g) => [String(g.id), g]));
+  const members = new Map(D.groups.map((g) => [String(g.id), []]));
+  for (const s of D.students) if (s.group_id != null) members.get(String(s.group_id))?.push(s);
+  for (const list of members.values()) list.sort((a, b) => String(a.joined_at).localeCompare(String(b.joined_at)));
+  return { topicById, groupById, members };
+}
+let X = null;
+
+function status(n) {
+  if (n >= L.max) return ["Completo", "b-rojo"];
+  if (n >= L.min) return ["En formación", "b-amar"];
+  if (n === 0) return ["Vacío", ""];
+  return ["Buscando integrantes", "b-verde"];
+}
+function where(s) {
+  if (s.group_id == null) return null;
+  const g = X.groupById.get(String(s.group_id));
+  const t = g && X.topicById.get(String(g.topic_id));
+  return g && t ? { g, t } : null;
+}
+const waLink = (phone) => {
+  const d = String(phone).replace(/\D/g, "");
+  return "https://wa.me/" + (d.startsWith("0") ? "595" + d.slice(1) : d);
+};
+
+async function load(renderIt = true) {
+  const d = await api("admin_state");
+  D = d; L = d.limits || L; X = idx();
+  if (renderIt && !$("#dlg").open) render(false);
+}
+function schedule() {
+  clearTimeout(timer);
+  if (document.hidden || !tok.get()) return;
+  timer = setTimeout(async () => { try { await load(); } catch { /* reintenta */ } schedule(); }, POLL_MS);
+}
+document.addEventListener("visibilitychange", () => { if (!document.hidden && tok.get()) { load().catch(() => {}); schedule(); } });
+
+async function act(fn, okMsg) {
+  if (busy) return null;
+  busy = true; document.body.classList.add("busy");
+  try { const r = await fn(); await load(); if (okMsg) toast(okMsg); return r ?? true; }
+  catch (e) { toast(e.message, true); try { await load(); } catch { /* ignore */ } return null; }
+  finally { busy = false; document.body.classList.remove("busy"); }
+}
+
+// ------------------------------------------------------------ diálogos
+function dialog(title, body, okLabel, onOk, danger, wide) {
+  const d = $("#dlg"), f = $("#dlg-form");
+  d.classList.toggle("wide", !!wide);
+  const err = h("p", { class: "error", role: "alert" });
+  const ok = h("button", { class: "btn " + (danger ? "btn-danger" : "btn-primary"), value: "ok" }, okLabel);
+  f.replaceChildren(h("h3", {}, title), h("div", { class: "stack", style: "margin-top:10px" }, body, err),
+    h("div", { class: "row" }, h("button", { class: "btn", value: "cancel", formnovalidate: true }, "Cancelar"), onOk ? ok : null));
+  f.onsubmit = async (e) => {
+    if (e.submitter?.value !== "ok" || !onOk) return;
+    e.preventDefault();
+    err.textContent = "";
+    try { const keep = await onOk(); if (!keep) d.close(); }
+    catch (x) { err.textContent = x.message; }
+  };
+  if (!d.open) d.showModal();
+  return { ok, err };
+}
+
+function moveDialog(s) {
+  const cur = s.group_id != null ? String(s.group_id) : null;
+  const sel = h("select", { id: "mv", required: true },
+    h("option", { value: "" }, "Elegí un grupo…"),
+    D.topics.map((t) => {
+      const gs = D.groups.filter((g) => String(g.topic_id) === String(t.id)).sort((a, b) => a.number - b.number);
+      if (!gs.length) return null;
+      return h("optgroup", { label: `Tema ${t.number}` }, gs.map((g) => {
+        const n = X.members.get(String(g.id)).length;
+        const isCur = String(g.id) === cur;
+        return h("option", { value: g.id, disabled: isCur || n >= L.max },
+          `Tema ${t.number}, Grupo ${g.number} (${n}/${L.max})${isCur ? " actual" : n >= L.max ? " completo" : ""}`);
+      }));
+    }));
+  dialog(`Mover a ${s.full_name}`,
+    h("div", { class: "field" }, h("label", { for: "mv" }, "Grupo de destino"), sel,
+      h("p", { class: "small muted" }, "Los grupos completos no se pueden elegir. Si el grupo actual queda vacío, se elimina.")),
+    "Mover", async () => {
+      if (!sel.value) throw new Error("Elegí un grupo.");
+      await act(() => api("admin_move_student", { student_id: s.id, group_id: sel.value }), "Estudiante movido.");
+    });
+}
+
+function editDialog(s) {
+  const f = (id, label, val, attrs = {}) => h("div", { class: "field" }, h("label", { for: id }, label), h("input", { id, value: val, ...attrs }));
+  const body = h("div", { class: "stack" },
+    f("e-name", "Nombre y apellido", s.full_name, { maxlength: 80 }),
+    f("e-ced", "Cédula", s.national_id, { inputmode: "numeric", maxlength: 20 }),
+    f("e-tel", "Teléfono", s.phone, { type: "tel", maxlength: 20 }));
+  dialog("Corregir datos", body, "Guardar", async () => {
+    const r = await act(() => api("admin_update_student", {
+      student_id: s.id,
+      full_name: $("#e-name").value, national_id: $("#e-ced").value, phone: $("#e-tel").value,
+    }), "Datos corregidos.");
+    if (!r) throw new Error("No se guardó. Revisá los datos.");
+  });
+}
+
+function confirmAct(title, text, label, fn, okMsg) {
+  dialog(title, h("p", {}, text), label, async () => { await act(fn, okMsg); }, true);
+}
+
+// ------------------------------------------------------------ acciones por estudiante
+function studentActions(s) {
+  return h("div", { class: "row" },
+    h("button", { class: "btn btn-sm", onclick: () => moveDialog(s) }, s.group_id != null ? "Mover" : "Asignar grupo"),
+    s.group_id != null ? h("button", { class: "btn btn-sm", onclick: () => confirmAct("Quitar del grupo", `${s.full_name} va a quedar sin grupo.`, "Quitar", () => api("admin_remove_from_group", { student_id: s.id }), "Quitado del grupo.") }, "Quitar del grupo") : null,
+    h("button", { class: "btn btn-sm", onclick: () => editDialog(s) }, "Corregir"),
+    h("button", { class: "btn btn-sm", onclick: () => { tab = "historial"; logQuery = s.full_name; render(true); } }, "Historial"),
+    h("button", { class: "btn btn-sm btn-danger", onclick: () => confirmAct("Eliminar registro", `Se elimina a ${s.full_name} (CI ${s.national_id}) y su lugar en el grupo. No se puede deshacer.`, "Eliminar", () => api("admin_delete_student", { student_id: s.id }), "Registro eliminado.") }, "Eliminar"));
+}
+
+// ------------------------------------------------------------ carga de grupos ya armados
+// Acepta líneas como:
+//   Juan Pérez, 1.234.567, 0981 123 456
+//   Juan Pérez; 1234567
+//   1. Juan Pérez 1.234.567 0981123456
+//   (o columnas pegadas desde Excel)
+function parseMembers(text) {
+  const rows = [];
+  const lines = text.split(/\r?\n/);
+  lines.forEach((raw) => {
+    let line = raw.replace(/\u00a0/g, " ").trim();
+    if (!line) return;
+    line = line.replace(/^\d{1,2}\s*[.)\-–:]\s+(?=\D)/, "");
+    let name = "", ced = "", phone = "";
+    const parts = line.split(/\t|;|,|\s[-–|]\s/).map((x) => x.trim()).filter(Boolean);
+    if (parts.length >= 2) {
+      [name, ced, phone = ""] = parts;
+      if (/\d/.test(name) && !/\d/.test(ced)) [name, ced] = [ced, name];
+    } else {
+      const m = line.match(/^([^\d+]+?)\s+([\d.\s+\-]+)$/);
+      if (m) {
+        name = m[1];
+        let rest = m[2];
+        const pm = rest.match(/(\+?\s*595[\s.-]*9\d{2}|09\d{2})[\s.-]*\d{3}[\s.-]*\d{3}/);
+        if (pm) { phone = pm[0]; rest = rest.replace(pm[0], " "); }
+        ced = rest;
+      } else {
+        name = line;
+      }
+    }
+    name = name.replace(/\s+/g, " ").trim();
+    const cedNorm = ced.replace(/[^0-9A-Za-z]/g, "").toUpperCase();
+    const phoneDigits = phone.replace(/\D/g, "");
+    let error = "";
+    if (!cedNorm) error = "Falta la cédula";
+    else if (!/^[0-9A-Z]{4,15}$/.test(cedNorm) || !/\d/.test(cedNorm)) error = "Cédula inválida";
+    else if (!(name.length >= 5 && name.length <= 80 && name.includes(" ") && /^[\p{L}\p{M}' .-]+$/u.test(name))) error = "Nombre y apellido inválidos";
+    else if (phone && (phoneDigits.length < 6 || phoneDigits.length > 15)) error = "Teléfono inválido";
+    rows.push({ raw, full_name: name, national_id: cedNorm, phone: phone.trim(), error });
+  });
+  const seen = new Map();
+  rows.forEach((r) => {
+    if (!r.national_id) return;
+    if (seen.has(r.national_id)) { r.error ||= "Cédula repetida en la lista"; seen.get(r.national_id).error ||= "Cédula repetida en la lista"; }
+    else seen.set(r.national_id, r);
+  });
+  return rows;
+}
+
+function nextFreeNumber(topicId) {
+  const used = new Set(D.groups.filter((g) => String(g.topic_id) === String(topicId)).map((g) => g.number));
+  let n = 1; while (used.has(n)) n++; return n;
+}
+
+function importDialog(presetTopicId) {
+  const topicSel = h("select", { id: "im-topic" }, D.topics.map((t) =>
+    h("option", { value: t.id, selected: String(t.id) === String(presetTopicId) }, `Tema ${t.number}: ${t.title}`)));
+  const num = h("input", { id: "im-num", type: "number", min: 1, max: 99, inputmode: "numeric", placeholder: "Automático" });
+  const ta = h("textarea", { id: "im-list", spellcheck: "false",
+    placeholder: "Un integrante por línea: nombre y apellido, cédula, teléfono\nJuan Pérez, 1.234.567, 0981 123 456\nMaría Gómez, 2345678\n(el teléfono es opcional)" });
+  const lock = h("input", { id: "im-lock", type: "checkbox", checked: true });
+  const info = h("p", { class: "small muted" });
+  const preview = h("div", { class: "scroll" });
+  const body = h("div", { class: "stack" },
+    h("div", { class: "field" }, h("label", { for: "im-topic" }, "Tema"), topicSel),
+    h("div", { class: "field" }, h("label", { for: "im-num" }, "Número de grupo"), num,
+      h("span", { class: "small muted" }, "Dejalo vacío para usar el siguiente libre. Si ese número ya existe, se agregan a ese grupo.")),
+    h("div", { class: "field" }, h("label", { for: "im-list" }, "Integrantes (hasta 12)"), ta),
+    h("label", { class: "check" }, lock,
+      h("span", {}, "Cerrar el grupo", h("span", { class: "small muted", style: "display:block;font-weight:400" },
+        "Los estudiantes no van a poder salir ni sumarse. Vos sí podés moverlos y abrirlo cuando quieras."))),
+    info, preview);
+
+  let reviewedSig = null;
+  const sig = () => JSON.stringify([topicSel.value, num.value, ta.value, lock.checked]);
+  const refs = dialog("Cargar grupo ya armado", body, "Revisar lista", async () => {
+    const rows = parseMembers(ta.value);
+    const topic = D.topics.find((t) => String(t.id) === topicSel.value);
+    const n = num.value ? Number(num.value) : null;
+    if (n !== null && (!Number.isInteger(n) || n < 1 || n > 99)) throw new Error("El número de grupo debe ser entre 1 y 99.");
+    if (!rows.length) throw new Error("Pegá al menos un integrante.");
+    if (rows.length > L.max) throw new Error(`Son ${rows.length} integrantes: el máximo es ${L.max}.`);
+
+    const target = n !== null ? D.groups.find((g) => String(g.topic_id) === String(topic.id) && g.number === n) : null;
+    const already = target ? X.members.get(String(target.id)) : [];
+    const byCed = new Map(D.students.map((st) => [st.national_id, st]));
+    let total = already.length;
+    for (const r of rows) {
+      const st = byCed.get(r.national_id);
+      r.status = "Nuevo";
+      if (st) {
+        const w = where(st);
+        if (target && String(st.group_id) === String(target.id)) r.status = `Ya está en este grupo (${st.full_name})`;
+        else {
+          total++;
+          r.status = `Ya registrado como ${st.full_name}` + (w ? `. Se mueve desde Tema ${w.t.number}, Grupo ${w.g.number}` : "");
+        }
+      } else total++;
+    }
+    const groupNum = n ?? nextFreeNumber(topic.id);
+    info.textContent = target
+      ? `El Grupo ${groupNum} del Tema ${topic.number} ya existe con ${already.length} integrantes. Quedaría con ${total}.`
+      : `Se crea el Grupo ${groupNum} del Tema ${topic.number} con ${total} integrantes${lock.checked ? ", cerrado" : ""}.`;
+
+    const bad = rows.filter((r) => r.error);
+    preview.replaceChildren(h("table", { class: "prev" },
+      h("thead", {}, h("tr", {}, h("th", {}, "#"), h("th", {}, "Integrante"), h("th", {}, "Situación"))),
+      h("tbody", {}, rows.map((r, i) => h("tr", { class: r.error ? "bad" : "" },
+        h("td", {}, i + 1),
+        h("td", {}, h("b", {}, r.full_name || r.raw),
+          h("span", { class: "small muted", style: "display:block" }, `CI ${r.national_id || "—"}`),
+          h("span", { class: "small muted", style: "display:block" }, r.phone ? `Tel. ${r.phone}` : "Sin teléfono")),
+        h("td", {}, r.error ? h("span", { class: "bad-msg" }, r.error) : r.status))))));
+
+    if (bad.length) { reviewedSig = null; refs.ok.textContent = "Revisar lista"; throw new Error(`Corregí ${bad.length === 1 ? "la fila marcada" : "las filas marcadas"} y volvé a revisar.`); }
+    if (total > L.max) { reviewedSig = null; throw new Error(`El grupo quedaría con ${total} integrantes: el máximo es ${L.max}.`); }
+
+    if (reviewedSig !== sig()) {
+      reviewedSig = sig();
+      refs.ok.textContent = `Cargar ${rows.length} ${rows.length === 1 ? "integrante" : "integrantes"}`;
+      return true;   // queda abierto para confirmar
+    }
+
+    const res = await api("admin_import_group", {
+      topic_id: topic.id, group_number: n, locked: lock.checked,
+      members: rows.map((r) => ({ full_name: r.full_name, national_id: r.national_id, phone: r.phone })),
+    });
+    await load(false);
+    render(true);
+    toast(`Grupo cargado: Tema ${res.topic_number}, Grupo ${res.group_number}.`);
+    const list = (label, arr) => arr.length ? h("p", {}, h("b", {}, label), arr.join(", ")) : null;
+    dialog("Grupo cargado", h("div", { class: "stack" },
+      h("p", {}, `Tema ${res.topic_number}, Grupo ${res.group_number}: ${res.count} integrantes${res.locked ? ", cerrado" : ""}.`),
+      list("Nuevos: ", res.created),
+      list("Ya estaban registrados: ", res.existing),
+      list("Movidos desde otro grupo: ", res.moved.map((m) => `${m.name} (${m.from})`))), null, null);
+    return true;
+  }, false, true);
+  for (const el of [topicSel, num, ta, lock]) {
+    el.addEventListener("input", () => { reviewedSig = null; refs.ok.textContent = "Revisar lista"; });
+  }
+  ta.focus();
+}
+
+// ------------------------------------------------------------ vistas
+function render(force) {
+  if (!D) return;
+  $("#top-actions").hidden = false;
+  let shell = $("#shell");
+  if (!shell || force) {
+    shell = h("div", { id: "shell" },
+      h("div", { class: "tabs", role: "tablist" },
+        [["resumen", "Resumen"], ["estudiantes", "Estudiantes"], ["grupos", "Grupos"], ["historial", "Historial"], ["exportar", "Exportar"]].map(([k, l]) =>
+          h("button", { role: "tab", "aria-selected": String(tab === k), onclick: () => { tab = k; render(true); } }, l))),
+      h("div", { id: "controls" }),
+      h("div", { id: "view", class: "stack", style: "margin-top:12px" }));
+    $("#app").replaceChildren(shell);
+    buildControls();
+  }
+  const v = $("#view");
+  v.replaceChildren(...({ resumen: vResumen, estudiantes: vEstudiantes, grupos: vGrupos, historial: vHistorial, exportar: vExportar })[tab]());
+}
+
+function chips(options, current, onPick) {
+  return h("div", { class: "chips" }, options.map(([k, l]) =>
+    h("button", { type: "button", "aria-pressed": String(current === k), onclick: () => onPick(k) }, l)));
+}
+
+function buildControls() {
+  const c = $("#controls");
+  if (tab === "estudiantes") {
+    const q = h("input", { type: "search", placeholder: "Buscar por nombre, cédula o teléfono", "aria-label": "Buscar estudiante", oninput: (e) => { stuQuery = e.target.value; render(false); } });
+    q.value = stuQuery;
+    c.replaceChildren(h("div", { class: "stack" }, q, chips(
+      [["todos", "Todos"], ["sin", "Sin grupo"], ["con", "Con grupo"], ["sintel", "Sin teléfono"]],
+      stuFilter, (k) => { stuFilter = k; render(true); })));
+  } else if (tab === "grupos") {
+    const q = h("input", { type: "search", placeholder: "Buscar integrante o tema", "aria-label": "Buscar en grupos", oninput: (e) => { grpQuery = e.target.value; render(false); } });
+    q.value = grpQuery;
+    c.replaceChildren(h("div", { class: "stack" },
+      h("button", { class: "btn btn-primary", onclick: () => importDialog() }, "Cargar grupo ya armado"),
+      q, chips(
+      [["todos", "Todos"], ["cerrados", "Cerrados"], ["incompletos", `Incompletos (menos de ${L.min})`], ["formacion", `En formación (${L.min}–${L.max - 1})`], ["completos", `Completos (${L.max})`]],
+      grpFilter, (k) => { grpFilter = k; render(true); })));
+  } else if (tab === "historial") {
+    const q = h("input", { type: "search", placeholder: "Filtrar por nombre, tema o acción", "aria-label": "Filtrar historial", oninput: (e) => { logQuery = e.target.value; render(false); } });
+    q.value = logQuery;
+    c.replaceChildren(q);
+  } else c.replaceChildren();
+}
+
+function fmtWhen(iso) {
+  const d = new Date(iso);
+  return d.toLocaleString("es-PY", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
+}
+
+function vHistorial() {
+  const f = fold(logQuery).trim();
+  const rows = D.activity.filter((a) => !f || fold(`${a.name || ""} ${a.action} ${a.detail || ""}`).includes(f));
+  return [
+    h("p", { class: "muted small" }, `Últimos ${D.activity.length} movimientos (los más recientes primero). Sirve para detectar cambios que alguien hizo con una cédula ajena.`),
+    rows.length ? h("section", { class: "panel" }, h("ul", { class: "log" }, rows.map((a) => h("li", {},
+      h("time", { datetime: a.at }, fmtWhen(a.at), a.actor === "admin" ? "  (administrador)" : ""),
+      h("span", {}, a.name ? h("b", {}, a.name, ": ") : null, a.action),
+      a.detail ? h("span", { class: "det" }, a.detail) : null))))
+      : h("p", { class: "panel muted" }, "No hay movimientos con ese filtro."),
+  ];
+}
+
+function vResumen() {
+  const counts = D.groups.map((g) => X.members.get(String(g.id)).length);
+  const sinGrupo = D.students.filter((s) => s.group_id == null).length;
+  const stat = (n, label, warn) => h("div", { class: "stat" + (warn ? " warn" : "") }, h("b", {}, n), label);
+  const rows = D.topics.map((t) => {
+    const gs = D.groups.filter((g) => String(g.topic_id) === String(t.id));
+    const ns = gs.map((g) => X.members.get(String(g.id)).length);
+    return h("tr", {},
+      h("td", {}, h("b", {}, t.number), " ", t.title),
+      h("td", { class: "num" }, gs.length),
+      h("td", { class: "num" }, ns.reduce((a, b) => a + b, 0)),
+      h("td", { class: "num" }, ns.filter((n) => n >= L.max).length),
+      h("td", { class: "num" }, ns.filter((n) => n < L.min).length));
+  });
+  return [
+    D.settings.registration_open && D.settings.group_changes_open ? null :
+      h("p", { class: "panel" }, h("b", {}, "Atención: "),
+        [!D.settings.registration_open && "la inscripción está cerrada", !D.settings.group_changes_open && "los cambios de grupo están cerrados"].filter(Boolean).join(" y "), "."),
+    h("div", { class: "stats" },
+      stat(D.students.length, "estudiantes registrados"),
+      stat(sinGrupo, "sin grupo", sinGrupo > 0),
+      stat(D.groups.length, "grupos"),
+      stat(counts.filter((n) => n >= L.max).length, `completos (${L.max})`),
+      stat(counts.filter((n) => n >= L.min && n < L.max).length, `en formación (${L.min}–${L.max - 1})`),
+      stat(counts.filter((n) => n < L.min).length, `por debajo de ${L.min}`, counts.some((n) => n < L.min))),
+    sinGrupo ? h("button", { class: "btn", onclick: () => { tab = "estudiantes"; stuFilter = "sin"; render(true); } }, `Ver los ${sinGrupo} estudiantes sin grupo`) : null,
+    h("div", { class: "panel scroll" }, h("table", {},
+      h("thead", {}, h("tr", {}, h("th", {}, "Tema"), h("th", { class: "num" }, "Grupos"), h("th", { class: "num" }, "Estudiantes"), h("th", { class: "num" }, "Completos"), h("th", { class: "num" }, `Menos de ${L.min}`))),
+      h("tbody", {}, rows))),
+    h("p", { class: "small muted" }, `Datos del servidor: ${new Date(D.server_time).toLocaleString("es-PY")}. Se actualiza solo cada ${POLL_MS / 1000} segundos.`),
+  ];
+}
+
+function vEstudiantes() {
+  const f = fold(stuQuery).trim();
+  const digits = stuQuery.replace(/\D/g, "");
+  let list = D.students.filter((s) => {
+    if (stuFilter === "sin" && s.group_id != null) return false;
+    if (stuFilter === "con" && s.group_id == null) return false;
+    if (stuFilter === "sintel" && s.phone) return false;
+    if (!f) return true;
+    return fold(s.full_name).includes(f) || (digits.length >= 3 && (s.national_id.includes(digits) || String(s.phone || "").includes(digits)));
+  });
+  const items = list.map((s) => {
+    const w = where(s);
+    const [st, cls] = w ? status(X.members.get(String(w.g.id)).length) : ["", ""];
+    return h("li", { class: "stu" },
+      h("div", { class: "stu-name" }, s.full_name),
+      h("div", { class: "kv" },
+        h("span", {}, h("b", {}, "CI"), s.national_id),
+        s.phone
+          ? h("span", {}, h("b", {}, "Tel."), h("a", { href: `tel:${s.phone}` }, s.phone), " ", h("a", { href: waLink(s.phone), target: "_blank", rel: "noopener", class: "small" }, "WhatsApp"))
+          : h("span", {}, h("b", {}, "Tel."), "sin cargar")),
+      h("div", { class: "row" },
+        w ? h("span", { class: `badge ${cls}` }, `Tema ${w.t.number}, Grupo ${w.g.number}`) : h("span", { class: "badge b-rojo" }, "Sin grupo"),
+        w && w.g.locked ? h("span", { class: "badge b-lock" }, "Grupo cerrado") : null,
+        !s.phone ? h("span", { class: "badge b-amar" }, "Sin teléfono") : null),
+      studentActions(s));
+  });
+  return [
+    h("p", { class: "muted" }, `${list.length} de ${D.students.length} estudiantes`),
+    items.length ? h("ul", { class: "list" }, items) : h("p", { class: "panel muted" }, "No hay estudiantes con ese filtro."),
+  ];
+}
+
+function vGrupos() {
+  const f = fold(grpQuery).trim();
+  const out = [];
+  for (const t of D.topics) {
+    const gs = D.groups.filter((g) => String(g.topic_id) === String(t.id)).sort((a, b) => a.number - b.number).filter((g) => {
+      const n = X.members.get(String(g.id)).length;
+      if (grpFilter === "cerrados" && !g.locked) return false;
+      if (grpFilter === "incompletos" && n >= L.min) return false;
+      if (grpFilter === "formacion" && (n < L.min || n >= L.max)) return false;
+      if (grpFilter === "completos" && n < L.max) return false;
+      if (!f) return true;
+      return fold(`tema ${t.number} ${t.title}`).includes(f) || X.members.get(String(g.id)).some((s) => fold(s.full_name).includes(f));
+    });
+    if ((grpFilter !== "todos" || f) && !gs.length) continue;
+    out.push(h("section", { class: "topic-block" },
+      h("div", { class: "topic-h" },
+        h("h2", {}, `Tema ${t.number}`, h("span", { class: "small muted", style: "display:block;font-family:var(--body);font-size:.95rem" }, t.title)),
+        h("div", { class: "row" },
+          h("button", { class: "btn btn-sm", onclick: () => importDialog(t.id) }, "Cargar grupo"),
+          h("button", { class: "btn btn-sm", onclick: () => act(() => api("admin_create_group", { topic_id: t.id }), `Grupo creado en el Tema ${t.number}.`) }, "+ Grupo vacío"))),
+      gs.length ? h("div", { class: "grid-groups" }, gs.map((g) => groupBox(t, g))) : h("p", { class: "muted small" }, "Sin grupos.")));
+  }
+  return out.length ? out : [h("p", { class: "panel muted" }, "Ningún grupo coincide con el filtro.")];
+}
+
+function groupBox(t, g) {
+  const ms = X.members.get(String(g.id));
+  const [st, cls] = status(ms.length);
+  return h("article", { class: "grp" },
+    h("div", { class: "grp-h" },
+      h("h3", {}, `Grupo ${g.number}`),
+      h("span", {}, h("b", {}, `${ms.length}/${L.max}`), " ", h("span", { class: `badge ${cls}` }, st),
+        g.locked ? h("span", { class: "badge b-lock", style: "margin-left:4px" }, "Cerrado") : null)),
+    ms.length ? h("ol", { class: "mem" }, ms.map((s) => h("li", {},
+        h("div", { class: "mem-info" },
+          h("b", {}, s.full_name),
+          h("span", { class: "small" }, `CI ${s.national_id}`, "  ", s.phone ? h("a", { href: `tel:${s.phone}` }, s.phone) : "sin teléfono")),
+        h("div", { class: "row mem-act" },
+          h("button", { class: "btn btn-sm", onclick: () => moveDialog(s) }, "Mover"),
+          h("button", { class: "btn btn-sm btn-danger", onclick: () => confirmAct("Quitar del grupo", `${s.full_name} va a quedar sin grupo.`, "Quitar", () => api("admin_remove_from_group", { student_id: s.id }), "Quitado del grupo.") }, "Quitar"))))) :
+      h("p", { class: "muted small" }, "Sin integrantes."),
+    h("div", { class: "row" },
+      h("button", { class: "btn btn-sm", onclick: () => act(() => api("admin_set_group_lock", { group_id: g.id, locked: !g.locked }),
+        g.locked ? `Grupo ${g.number} abierto.` : `Grupo ${g.number} cerrado.`) }, g.locked ? "Abrir grupo" : "Cerrar grupo"),
+      h("button", { class: "btn btn-sm btn-danger", onclick: () => confirmAct("Eliminar grupo", `Se elimina el Grupo ${g.number} del Tema ${t.number}. Sus ${ms.length} integrantes quedan sin grupo.`, "Eliminar grupo", () => api("admin_delete_group", { group_id: g.id }), "Grupo eliminado.") }, "Eliminar grupo")));
+}
+
+// ------------------------------------------------------------ exportación
+function csv(rows) {
+  const esc = (v) => {
+    // {excelText: "0981..."} se escribe como ="0981..." para que Excel conserve el 0 inicial
+    if (v && typeof v === "object" && "excelText" in v) return `="${String(v.excelText).replace(/\D/g, "")}"`;
+    let s = v == null ? "" : String(v);
+    if (/^[=+\-@\t\r]/.test(s)) s = "'" + s; // evita fórmulas inyectadas
+    return /[";\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  };
+  return "\uFEFF" + rows.map((r) => r.map(esc).join(";")).join("\r\n");
+}
+const tel = (p) => (p ? { excelText: p } : "");
+function download(name, text) {
+  const blob = new Blob([text], { type: "text/csv;charset=utf-8" });
+  const a = h("a", { href: URL.createObjectURL(blob), download: name });
+  document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+const stamp = () => new Date().toISOString().slice(0, 16).replace(/[-:T]/g, "");
+
+function exportGroups() {
+  const rows = [["Tema", "Título del tema", "Grupo", "Integrantes del grupo", "Estado", "Cerrado", "N.º", "Nombre y apellido", "Cédula", "Teléfono"]];
+  for (const t of D.topics) {
+    for (const g of D.groups.filter((x) => String(x.topic_id) === String(t.id)).sort((a, b) => a.number - b.number)) {
+      const ms = X.members.get(String(g.id));
+      const st = status(ms.length)[0];
+      const lk = g.locked ? "Sí" : "No";
+      if (!ms.length) rows.push([t.number, t.title, g.number, 0, st, lk, "", "", "", ""]);
+      ms.forEach((s, i) => rows.push([t.number, t.title, g.number, ms.length, st, lk, i + 1, s.full_name, s.national_id, tel(s.phone)]));
+    }
+  }
+  download(`grupos_${stamp()}.csv`, csv(rows));
+}
+function exportStudents(onlyWithout) {
+  const rows = [["Nombre y apellido", "Cédula", "Teléfono", "Tema", "Grupo", "Registrado"]];
+  for (const s of D.students) {
+    if (onlyWithout && s.group_id != null) continue;
+    const w = where(s);
+    rows.push([s.full_name, s.national_id, tel(s.phone), w ? w.t.number : "", w ? w.g.number : "",
+      new Date(s.created_at).toLocaleString("es-PY")]);
+  }
+  download(`${onlyWithout ? "sin_grupo" : "estudiantes"}_${stamp()}.csv`, csv(rows));
+}
+function whatsappText() {
+  const lines = ["TRABAJO PRÁCTICO — GRUPOS", ""];
+  for (const t of D.topics) {
+    const gs = D.groups.filter((x) => String(x.topic_id) === String(t.id)).sort((a, b) => a.number - b.number);
+    if (!gs.length) continue;
+    lines.push(`*Tema ${t.number}: ${t.title}*`);
+    for (const g of gs) {
+      const ms = X.members.get(String(g.id));
+      lines.push(`Grupo ${g.number} (${ms.length}/${L.max})`);
+      ms.forEach((s, i) => lines.push(`${i + 1}. ${s.full_name}`));
+      lines.push("");
+    }
+  }
+  return lines.join("\n");
+}
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); toast("Lista copiada. Pegala en WhatsApp."); }
+  catch {
+    const ta = h("textarea", { style: "width:100%;height:220px" }); ta.value = text;
+    dialog("Copiá la lista", ta, null, null); ta.select();
+  }
+}
+
+function vExportar() {
+  const sw = (key, label, desc) => h("div", { class: "switch" },
+    h("div", {}, h("b", {}, label), h("div", { class: "small muted" }, desc)),
+    h("button", {
+      class: "btn toggle", "aria-pressed": String(D.settings[key]),
+      onclick: () => confirmAct(D.settings[key] ? `Cerrar: ${label.toLowerCase()}` : `Abrir: ${label.toLowerCase()}`,
+        D.settings[key] ? "Los estudiantes no van a poder hacer esto hasta que lo vuelvas a abrir." : "Los estudiantes van a poder hacerlo de nuevo.",
+        D.settings[key] ? "Cerrar" : "Abrir",
+        () => api("admin_set_settings", { [key]: !D.settings[key] }), "Configuración guardada."),
+    }, D.settings[key] ? "Abierto" : "Cerrado"));
+  return [
+    h("section", { class: "panel" },
+      h("h2", {}, "Inscripción"),
+      sw("registration_open", "Registro de estudiantes", "Permite crear cuentas nuevas."),
+      sw("group_changes_open", "Cambios de grupo", "Permite unirse, crear, abandonar y cambiar de grupo. Vos podés mover estudiantes siempre.")),
+    h("section", { class: "panel stack" },
+      h("h2", {}, "Exportar"),
+      h("p", { class: "small muted" }, "Archivos CSV separados por punto y coma, listos para Excel o Google Sheets. Incluyen cédula y teléfono: no los compartas en grupos."),
+      h("div", { class: "row" },
+        h("button", { class: "btn btn-primary", onclick: exportGroups }, "Grupos con integrantes"),
+        h("button", { class: "btn", onclick: () => exportStudents(false) }, "Todos los estudiantes"),
+        h("button", { class: "btn", onclick: () => exportStudents(true) }, "Estudiantes sin grupo"))),
+    h("section", { class: "panel stack" },
+      h("h2", {}, "Lista para compartir"),
+      h("p", { class: "small muted" }, "Solo nombres, temas y grupos. Sin cédulas ni teléfonos."),
+      h("button", { class: "btn", onclick: () => copyText(whatsappText()) }, "Copiar lista para WhatsApp")),
+  ];
+}
+
+// ------------------------------------------------------------ login
+function showLogin(msg) {
+  clearTimeout(timer);
+  D = null;
+  $("#top-actions").hidden = true;
+  const err = h("p", { class: "error", role: "alert" }, msg || "");
+  const pw = h("input", { id: "pw", type: "password", autocomplete: "current-password", required: true });
+  const btn = h("button", { class: "btn btn-primary", type: "submit", style: "width:100%" }, "Ingresar");
+  const form = h("form", { class: "panel stack login" },
+    h("h2", {}, "Acceso del administrador"),
+    h("div", { class: "field" }, h("label", { for: "pw" }, "Contraseña"), pw),
+    err, btn,
+    h("p", { class: "small muted" }, "La contraseña se verifica en el servidor. Esta página no la guarda."));
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    btn.disabled = true; err.textContent = "";
+    try {
+      const r = await api("admin_login", { password: pw.value });
+      tok.set(r.token);
+      pw.value = "";
+      await load(false);
+      render(true);
+      schedule();
+    } catch (x) { err.textContent = x.message; }
+    finally { btn.disabled = false; }
+  });
+  $("#app").replaceChildren(form);
+  pw.focus();
+}
+
+// Al cerrar un diálogo se redibuja con los datos recién cargados
+$("#dlg").addEventListener("close", () => { if (D && tok.get()) render(false); });
+$("#btn-refresh").addEventListener("click", () => act(async () => {}, "Actualizado."));
+$("#btn-logout").addEventListener("click", async () => {
+  try { await api("admin_logout"); } catch { /* igual se cierra */ }
+  tok.set(null);
+  showLogin("Sesión cerrada.");
+});
+
+if (!API) $("#app").textContent = "Falta configurar FUNCTION_URL en config.js.";
+else if (tok.get()) load(false).then(() => { render(true); schedule(); }).catch((e) => { if (tok.get()) showLogin(e.message); });
+else showLogin();
+})();
+</script>
+</body>
+</html>

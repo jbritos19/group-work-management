@@ -1,0 +1,1047 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Organización de grupos — Trabajo práctico</title>
+<meta name="description" content="Registrate, mirá los grupos de cada tema y elegí el tuyo.">
+<meta property="og:title" content="Organización de grupos — Trabajo práctico">
+<meta property="og:description" content="Registrate, mirá los grupos de cada tema y elegí el tuyo.">
+<meta property="og:type" content="website">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1C2B5A">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231C2B5A'/%3E%3Cg fill='%23fff'%3E%3Ccircle cx='9' cy='12' r='3'/%3E%3Ccircle cx='16' cy='12' r='3'/%3E%3Ccircle cx='23' cy='12' r='3'/%3E%3Ccircle cx='9' cy='21' r='3'/%3E%3Ccircle cx='16' cy='21' r='3'/%3E%3C/g%3E%3Ccircle cx='23' cy='21' r='2.3' fill='none' stroke='%23fff' stroke-width='1.4'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<style>
+:root {
+  --tinta: #1C2B5A;
+  --tinta-2: #2A3D78;
+  --papel: #F3F5FA;
+  --hoja: #FFFFFF;
+  --texto: #141A2E;
+  --suave: #586182;
+  --linea: #DCE1EC;
+  --foco: #3D63DD;
+  --verde: #1E7F46;  --verde-bg: #E3F3E9;  --verde-pip: #2E9E5B;
+  --amar: #7A5A00;   --amar-bg: #FFF3CC;   --amar-pip: #E8B400;
+  --rojo: #B3261E;   --rojo-bg: #FCE6E4;   --rojo-pip: #D2372C;
+  --vacio: #D5DAE6;
+  --err-bg: #FCE6E4;
+  --display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", system-ui, sans-serif;
+  --body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --r-s: 8px;
+  --r-m: 14px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tinta: #16214A; --tinta-2: #8EA6FF;
+    --papel: #0D1224; --hoja: #151C35; --texto: #E7EBF6; --suave: #9CA6C4; --linea: #28314F;
+    --foco: #8EA6FF;
+    --verde: #7FD6A0; --verde-bg: #173A28; --verde-pip: #3DBB6F;
+    --amar: #F5D36B;  --amar-bg: #3A3113;  --amar-pip: #E8B400;
+    --rojo: #FF9B93;  --rojo-bg: #43201F;  --rojo-pip: #E0483D;
+    --vacio: #2E3858; --err-bg: #43201F;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--papel); color: var(--texto);
+  font: 400 1rem/1.5 var(--body);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+a { color: inherit; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--foco); outline-offset: 2px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- cabecera ---------- */
+.band { background: var(--tinta); color: #fff; position: relative; }
+.band::before {
+  content: ""; display: block; height: 5px;
+  background: linear-gradient(to bottom, #D52B1E 0 33.3%, #fff 33.3% 66.6%, #0038A8 66.6%);
+}
+.band-inner {
+  max-width: 760px; margin: 0 auto; padding: 18px 18px 14px;
+  display: grid; grid-template-columns: 1fr auto; gap: 12px 12px; align-items: center;
+}
+.title { grid-column: 1 / -1; min-width: 0; margin: 0; font-family: var(--display); text-transform: uppercase; line-height: .92; }
+.title a { text-decoration: none; }
+.title .l1 { display: block; font-weight: 700; font-size: clamp(2rem, 10.5vw, 3.4rem); letter-spacing: .005em; }
+.title .l2 { display: block; font-weight: 500; font-size: clamp(1.25rem, 5vw, 1.75rem); letter-spacing: .12em; margin-top: 6px; opacity: .82; }
+.title .l3 { display: block; font-family: var(--body); text-transform: none; font-weight: 700; font-size: 1rem; letter-spacing: 0; margin-top: 8px; opacity: .9; }
+.hello { font-family: var(--display); font-weight: 700; font-size: clamp(1.9rem, 8vw, 2.4rem); line-height: 1.02; margin: 0; overflow-wrap: anywhere; }
+.guide-card { display: grid; grid-template-columns: 1fr auto; gap: 10px 14px; align-items: center; }
+.guide-card p { margin: 0; }
+.guide-card h2 { font-size: 1.45rem; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-size: .85rem; font-weight: 700; padding: 3px 10px; border-radius: 6px; background: var(--vacio); }
+.tag.req { background: var(--rojo-bg); color: var(--rojo); }
+.steps { list-style: none; margin: 0; padding: 0; counter-reset: paso; }
+.steps > li { counter-increment: paso; display: grid; grid-template-columns: 42px 1fr; gap: 2px 12px; padding: 14px 0; border-top: 1px solid var(--linea); }
+.steps > li:first-child { border-top: 0; padding-top: 4px; }
+.steps > li::before { content: counter(paso); grid-row: 1 / span 2; font-family: var(--display); font-weight: 700; font-size: 2rem; line-height: 1; color: var(--tinta); }
+@media (prefers-color-scheme: dark) { .steps > li::before { color: var(--tinta-2); } }
+.steps h3 { margin: 0; font-size: 1.05rem; line-height: 1.3; }
+.steps p { margin: 4px 0 0; }
+.steps li.key { background: var(--amar-bg); border-radius: var(--r-s); padding: 14px 12px; border-top: 0; margin: 6px 0; }
+.steps li.key + li { border-top: 0; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin: 0; }
+.facts div { border: 1px solid var(--linea); border-radius: var(--r-s); padding: 10px 12px; }
+.facts dt { font-size: .85rem; color: var(--suave); }
+.facts dd { margin: 2px 0 0; font-weight: 700; }
+@media print {
+  .band, #toast, .back, .no-print { display: none !important; }
+  body { background: #fff; color: #000; }
+  .panel { border: 0; padding: 0; }
+}
+.account {
+  grid-row: 2; grid-column: 2; white-space: nowrap;
+  min-height: 44px; min-width: 44px; padding: 0 14px; border-radius: 999px;
+  border: 1.5px solid rgba(255,255,255,.55); background: transparent; color: #fff;
+  font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
+}
+.account:hover { background: rgba(255,255,255,.1); }
+.live { grid-row: 2; grid-column: 1; margin: 0; font-size: .82rem; opacity: .75; display: flex; align-items: center; gap: 7px; }
+.live .dot { width: 8px; height: 8px; border-radius: 50%; background: #8FE3AE; }
+.live.off .dot { background: #FFB4AB; }
+
+/* ---------- estructura ---------- */
+main { max-width: 760px; margin: 0 auto; padding: 16px 16px 48px; }
+.panel { background: var(--hoja); border: 1px solid var(--linea); border-radius: var(--r-m); padding: 16px; }
+.stack > * + * { margin-top: 14px; }
+h2 { font-family: var(--display); font-weight: 700; font-size: 1.7rem; line-height: 1.05; margin: 0; }
+.muted { color: var(--suave); }
+.small { font-size: .9rem; }
+.notice { border-radius: var(--r-s); padding: 10px 12px; background: var(--amar-bg); color: var(--amar); font-weight: 700; }
+
+/* ---------- botones ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 46px; padding: 0 18px; border-radius: 10px; border: 1.5px solid transparent;
+  font-weight: 700; text-decoration: none; cursor: pointer; text-align: center; line-height: 1.15;
+}
+.btn-primary { background: var(--tinta); color: #fff; }
+@media (prefers-color-scheme: dark) { .btn-primary { background: #3552B8; } }
+.btn-primary:hover { filter: brightness(1.12); }
+.btn-line { background: transparent; border-color: var(--linea); color: var(--texto); }
+.btn-line:hover { border-color: var(--suave); }
+.btn-danger { background: transparent; border-color: var(--rojo-pip); color: var(--rojo); }
+.btn[disabled], .btn[aria-disabled="true"] { opacity: .55; cursor: not-allowed; filter: none; }
+.btn-block { width: 100%; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; }
+.row > .btn { flex: 1 1 auto; }
+body.busy .btn { pointer-events: none; }
+.link { background: none; border: 0; padding: 0; color: var(--tinta-2); text-decoration: underline; cursor: pointer; font-weight: 700; }
+@media (prefers-color-scheme: light) { .link { color: var(--tinta); } }
+
+/* ---------- mi grupo ---------- */
+.current { border-left: 6px solid var(--tinta); }
+@media (prefers-color-scheme: dark) { .current { border-left-color: var(--tinta-2); } }
+.current .where { font-family: var(--display); font-weight: 700; font-size: 1.9rem; line-height: 1; margin: 2px 0 4px; }
+.current p { margin: 0; }
+
+/* ---------- búsqueda ---------- */
+.search { position: relative; }
+.search input {
+  width: 100%; min-height: 50px; border-radius: 12px; border: 1.5px solid var(--linea);
+  background: var(--hoja); padding: 0 14px 0 44px; font-size: 1.02rem;
+}
+.search svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--suave); }
+.results { list-style: none; margin: 0; padding: 0; }
+.results li + li { border-top: 1px solid var(--linea); }
+.results a { display: block; padding: 10px 2px; text-decoration: none; }
+.results .sub { display: block; color: var(--suave); font-size: .9rem; }
+
+/* ---------- temas ---------- */
+.topics { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.topic {
+  display: grid; grid-template-columns: 56px 1fr; gap: 4px 12px; text-decoration: none;
+  background: var(--hoja); border: 1px solid var(--linea); border-radius: var(--r-m); padding: 14px 14px 14px 0;
+  overflow: hidden;
+}
+.topic:hover { border-color: var(--suave); }
+.topic-num {
+  grid-row: 1 / span 2; align-self: stretch; display: flex; align-items: flex-start; justify-content: center;
+  font-family: var(--display); font-weight: 700; font-size: 2.3rem; line-height: 1; color: var(--tinta);
+  border-right: 1px solid var(--linea); padding-top: 2px;
+}
+@media (prefers-color-scheme: dark) { .topic-num { color: var(--tinta-2); } }
+.topic-title { font-weight: 700; font-size: 1.04rem; line-height: 1.3; }
+.topic-stats { display: flex; flex-wrap: wrap; gap: 4px 16px; color: var(--suave); font-size: .92rem; }
+.topic-stats b { color: var(--texto); }
+.topic-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-top: 4px; }
+.topic-foot .left { display: grid; gap: 4px; }
+.topic-foot .btn { min-height: 40px; padding: 0 14px; }
+.mine-tag { font-size: .85rem; font-weight: 700; color: var(--tinta); background: color-mix(in srgb, var(--tinta) 10%, transparent); padding: 3px 9px; border-radius: 6px; }
+@media (prefers-color-scheme: dark) { .mine-tag { color: var(--tinta-2); background: color-mix(in srgb, var(--tinta-2) 16%, transparent); } }
+
+/* ---------- vista de tema ---------- */
+.back { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font-weight: 700; text-decoration: none; color: var(--suave); }
+.topic-head .num { font-family: var(--display); font-weight: 600; font-size: 1.15rem; color: var(--suave); text-transform: uppercase; letter-spacing: .08em; }
+.topic-head h2 { font-size: clamp(1.7rem, 6.5vw, 2.3rem); }
+.groups { display: grid; gap: 12px; }
+@media (min-width: 720px) { .groups { grid-template-columns: 1fr 1fr; } }
+.group { background: var(--hoja); border: 1px solid var(--linea); border-radius: var(--r-m); padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 10px; }
+.group.is-mine { border: 2px solid var(--tinta); }
+@media (prefers-color-scheme: dark) { .group.is-mine { border-color: var(--tinta-2); } }
+.group.flash { animation: flash 1.6s ease-out 1; }
+@keyframes flash { 0% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--foco) 45%, transparent); } 100% { box-shadow: 0 0 0 0 transparent; } }
+.group-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.group-name { font-family: var(--display); font-weight: 700; font-size: 1.9rem; line-height: 1; text-transform: uppercase; margin: 0; }
+.count { font-size: .98rem; }
+.count b { font-size: 1.15rem; }
+.seats { display: flex; gap: 4px; align-items: center; }
+.seat { flex: 1; height: 12px; border-radius: 3px; background: var(--vacio); }
+.seat.gap { margin-left: 8px; }
+.g-verde .seat.on { background: var(--verde-pip); }
+.g-amar .seat.on { background: var(--amar-pip); }
+.g-rojo .seat.on { background: var(--rojo-pip); }
+.status { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: .9rem; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+.status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.g-verde .status { background: var(--verde-bg); color: var(--verde); }
+.g-amar .status { background: var(--amar-bg); color: var(--amar); }
+.g-rojo .status { background: var(--rojo-bg); color: var(--rojo); }
+.members { margin: 0; padding-left: 1.6em; }
+.members li { padding: 3px 0; }
+.members li::marker { color: var(--suave); font-variant-numeric: tabular-nums; }
+.you { font-size: .78rem; font-weight: 700; background: var(--tinta); color: #fff; border-radius: 5px; padding: 1px 6px; margin-left: 6px; vertical-align: 1px; }
+.group .actions { margin-top: auto; display: grid; gap: 8px; }
+.empty { text-align: center; padding: 26px 16px; }
+.lock { display: inline-flex; align-items: center; gap: 5px; font-size: .85rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: var(--vacio); color: var(--texto); margin-left: 6px; }
+.who { font-size: .92rem; color: var(--suave); }
+.rules > li { margin-bottom: 12px; }
+.rules b { display: block; }
+.specs { list-style: none; margin: 0; padding: 0; }
+.specs li { padding: 8px 0; border-bottom: 1px solid var(--linea); display: grid; gap: 2px; }
+.specs li:last-child { border-bottom: 0; }
+.specs .k { font-weight: 700; }
+.field input.big { font-size: 1.35rem; letter-spacing: .04em; min-height: 58px; }
+
+/* ---------- formularios ---------- */
+.field { display: grid; gap: 5px; }
+.field label { font-weight: 700; }
+.field input {
+  min-height: 50px; border-radius: 10px; border: 1.5px solid var(--linea); background: var(--hoja);
+  padding: 0 14px; font-size: 1.05rem; width: 100%;
+}
+.field input[aria-invalid="true"] { border-color: var(--rojo-pip); }
+.field .hint { font-size: .88rem; color: var(--suave); }
+.form-error { background: var(--err-bg); color: var(--rojo); border-radius: var(--r-s); padding: 10px 12px; font-weight: 700; }
+.form-error:empty { display: none; }
+.tabs-unused { display: grid; grid-template-columns: 1fr 1fr; background: var(--hoja); border: 1px solid var(--linea); border-radius: 12px; padding: 4px; gap: 4px; }
+.tabs a { min-height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 9px; text-decoration: none; font-weight: 700; color: var(--suave); }
+.tabs a[aria-current="page"] { background: var(--tinta); color: #fff; }
+.privacy { display: flex; gap: 10px; font-size: .9rem; color: var(--suave); }
+.privacy svg { flex: none; margin-top: 2px; }
+
+/* ---------- diálogo y aviso ---------- */
+dialog { border: 0; border-radius: 16px; padding: 0; max-width: min(440px, calc(100vw - 32px)); width: 100%; background: var(--hoja); color: var(--texto); }
+dialog::backdrop { background: rgba(10, 14, 30, .55); }
+.dlg { padding: 20px; }
+.dlg h3 { margin: 0 0 8px; font-family: var(--display); font-size: 1.6rem; line-height: 1.05; }
+.dlg p { margin: 0 0 16px; }
+.dlg .row { flex-direction: row-reverse; }
+#toast {
+  position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom)); transform: translate(-50%, 20px);
+  max-width: min(520px, calc(100vw - 24px)); width: max-content;
+  background: var(--texto); color: var(--papel); padding: 12px 16px; border-radius: 12px; font-weight: 700;
+  opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 50;
+}
+#toast.show { opacity: 1; transform: translate(-50%, 0); }
+#toast.error { background: var(--rojo-pip); color: #fff; }
+.loading { padding: 40px 0; text-align: center; color: var(--suave); }
+@media (prefers-reduced-motion: reduce) { *, *::before { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<header class="band">
+  <div class="band-inner">
+    <h1 class="title"><a href="#/"><span class="l1">Organización de grupos</span><span class="l2">Trabajo práctico</span><span class="l3">Derecho Político</span></a></h1>
+    <p id="live" class="live off" aria-live="off"><span class="dot"></span><span id="live-text">Conectando…</span></p>
+    <a id="account" class="account" href="#/entrar">Entrar</a>
+  </div>
+</header>
+<main id="app"><p class="loading">Cargando grupos…</p></main>
+<div id="toast" role="status" aria-live="polite"></div>
+<dialog id="dlg"><form method="dialog" class="dlg"><h3 id="dlg-t"></h3><p id="dlg-m"></p><div class="row"><button class="btn btn-primary" value="ok" id="dlg-ok">Aceptar</button><button class="btn btn-line" value="cancel">Cancelar</button></div></form></dialog>
+
+<script src="config.js"></script>
+<script>
+(() => {
+"use strict";
+
+const CFG = window.APP_CONFIG || {};
+const API = CFG.FUNCTION_URL;
+const POLL_MS = Math.max(3, CFG.POLL_SECONDS || 6) * 1000;
+const TOKEN_KEY = "tpgrupos.token";
+const NEXT_KEY = "tpgrupos.next";
+const $ = (s) => document.querySelector(s);
+
+// ---------------------------------------------------------------- sesión
+let memToken = null;
+const tokenStore = {
+  get() { try { return localStorage.getItem(TOKEN_KEY); } catch { return memToken; } },
+  set(v) {
+    memToken = v || null;
+    try { v ? localStorage.setItem(TOKEN_KEY, v) : localStorage.removeItem(TOKEN_KEY); } catch { /* modo privado */ }
+  },
+};
+const nextStore = {
+  get() { try { return sessionStorage.getItem(NEXT_KEY); } catch { return null; } },
+  set(v) { try { v ? sessionStorage.setItem(NEXT_KEY, v) : sessionStorage.removeItem(NEXT_KEY); } catch { /* sin almacenamiento */ } },
+};
+
+// ---------------------------------------------------------------- API
+class ApiError extends Error { constructor(code, msg) { super(msg); this.code = code; } }
+
+async function api(action, payload = {}) {
+  const headers = { "Content-Type": "application/json" };
+  const t = tokenStore.get();
+  if (t) headers["x-session-token"] = t;
+  let res;
+  try {
+    res = await fetch(API, { method: "POST", headers, body: JSON.stringify({ ...payload, action }) });
+  } catch {
+    throw new ApiError("NETWORK", "Sin conexión. Revisá tu internet e intentá de nuevo.");
+  }
+  let body;
+  try { body = await res.json(); } catch { throw new ApiError("INTERNAL", "El servidor respondió algo inesperado. Intentá de nuevo."); }
+  if (!body.ok) {
+    if (body.error.code === "NOT_AUTHENTICATED" && tokenStore.get() === t) tokenStore.set(null);
+    throw new ApiError(body.error.code, body.error.message);
+  }
+  return body.data;
+}
+
+// ---------------------------------------------------------------- DOM seguro
+// Todo texto se inserta con textContent: los nombres nunca se interpretan como HTML.
+function h(tag, attrs, ...kids) {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (v == null || v === false) continue;
+    if (k === "class") el.className = v;
+    else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+    else if (v === true) el.setAttribute(k, "");
+    else el.setAttribute(k, String(v));
+  }
+  for (const kid of kids.flat(Infinity)) {
+    if (kid == null || kid === false) continue;
+    el.append(kid instanceof Node ? kid : document.createTextNode(String(kid)));
+  }
+  return el;
+}
+const svg = (html) => { const t = document.createElement("template"); t.innerHTML = html; return t.content.firstChild; };
+const ICON_SEARCH = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
+const ICON_LOCK = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
+
+// ---------------------------------------------------------------- utilidades
+const fold = (s) => String(s || "").normalize("NFD").replace(/\p{M}/gu, "").toLowerCase().trim();
+const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+let LIMITS = { min: 8, max: 12 };
+
+function statusOf(count) {
+  if (count >= LIMITS.max) return { cls: "g-rojo", label: "Completo" };
+  if (count >= LIMITS.min) return { cls: "g-amar", label: "En formación" };
+  return { cls: "g-verde", label: "Buscando integrantes" };
+}
+
+function toast(msg, kind) {
+  const el = $("#toast");
+  el.textContent = msg;
+  el.className = "show" + (kind === "error" ? " error" : "");
+  clearTimeout(toast.t);
+  toast.t = setTimeout(() => { el.className = ""; }, kind === "error" ? 5200 : 3200);
+}
+
+function confirmDlg(title, message, okLabel = "Aceptar", danger = false) {
+  const d = $("#dlg");
+  if (typeof d.showModal !== "function") return Promise.resolve(window.confirm(`${title}\n\n${message}`));
+  $("#dlg-t").textContent = title;
+  $("#dlg-m").textContent = message;
+  const ok = $("#dlg-ok");
+  ok.textContent = okLabel;
+  ok.className = "btn " + (danger ? "btn-danger" : "btn-primary");
+  d.returnValue = "";
+  d.showModal();
+  return new Promise((res) => d.addEventListener("close", () => res(d.returnValue === "ok"), { once: true }));
+}
+
+const validName = (n) => {
+  const v = n.normalize("NFC").replace(/\s+/g, " ").trim();
+  return v.length >= 5 && v.length <= 80 && v.includes(" ") && /^[\p{L}\p{M}' .-]+$/u.test(v);
+};
+const validCedula = (c) => { const v = c.replace(/[^0-9A-Za-z]/g, ""); return /^[0-9A-Za-z]{4,15}$/.test(v) && /[0-9]/.test(v); };
+const validPhone = (p) => { const d = p.replace(/\D/g, ""); return d.length >= 6 && d.length <= 15; };
+const cedDigits = (c) => c.replace(/[^0-9A-Za-z]/g, "").toUpperCase();
+const fmtCed = (c) => /^\d+$/.test(c) ? c.replace(/\B(?=(\d{3})+(?!\d))/g, ".") : c;
+
+// ---------------------------------------------------------------- estado y sondeo
+let S = null;           // estado del servidor
+let wasAuth = false;
+let busy = false;
+let query = "";
+let changeMode = false;
+let lastSig = "";
+let pollTimer = null;
+
+async function refresh() {
+  const sent = tokenStore.get();
+  try {
+    const data = await api("state");
+    // Si el token cambió mientras viajaba la consulta (ingreso/salida), esta respuesta es vieja
+    if (tokenStore.get() !== sent) return refresh();
+    if (!data.authenticated && sent) {
+      tokenStore.set(null);
+      if (wasAuth) toast("Tu sesión terminó. Ingresá de nuevo.", "error");
+    }
+    wasAuth = data.authenticated;
+    const first = !S;
+    S = data;
+    LIMITS = data.limits || LIMITS;
+    setLive(true);
+    render(first);   // la primera carga dibuja cualquier ruta, incluso formularios
+  } catch (e) {
+    setLive(false);
+    if (!S) renderFatal(e.message);
+  }
+}
+
+function schedule() {
+  clearTimeout(pollTimer);
+  if (document.hidden) return;
+  pollTimer = setTimeout(async () => { await refresh(); schedule(); }, POLL_MS);
+}
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) clearTimeout(pollTimer);
+  else { refresh(); schedule(); }
+});
+window.addEventListener("online", () => { refresh(); schedule(); });
+
+function setLive(ok) {
+  const el = $("#live");
+  el.classList.toggle("off", !ok);
+  const now = new Date().toLocaleTimeString("es-PY", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+  $("#live-text").textContent = ok ? `Actualizado en vivo, ${now}` : "Sin conexión, reintentando…";
+}
+
+async function act(fn, okMsg) {
+  if (busy) return null;
+  busy = true;
+  document.body.classList.add("busy");
+  try {
+    const r = await fn();
+    await refresh();
+    if (okMsg) toast(typeof okMsg === "function" ? okMsg(r) : okMsg);
+    return r;
+  } catch (e) {
+    toast(e.message, "error");
+    if (e.code === "NOT_AUTHENTICATED") { wasAuth = false; go("#/entrar"); }
+    else await refresh();
+    return null;
+  } finally {
+    busy = false;
+    document.body.classList.remove("busy");
+  }
+}
+
+// ---------------------------------------------------------------- rutas
+function route() {
+  const p = location.hash.replace(/^#\/?/, "").split("/").filter(Boolean);
+  if (p[0] === "tema" && p[1]) return { name: "topic", num: Number(p[1]), group: p[2] === "grupo" ? Number(p[3]) : null };
+  if (["entrar", "registro", "ingresar", "crear-pin"].includes(p[0])) return { name: "entrar" };
+  if (p[0] === "perfil") return { name: "perfil" };
+  if (p[0] === "consignas") return { name: "consignas" };
+  if (p[0] === "indicaciones") return { name: "indicaciones" };
+  return { name: "home" };
+}
+function go(hash) { if (location.hash === hash) render(true); else location.hash = hash; }
+window.addEventListener("hashchange", () => { changeMode = changeMode && route().name !== "home" ? false : changeMode; render(true); window.scrollTo(0, 0); });
+
+const FORM_ROUTES = new Set(["entrar", "perfil"]);
+
+function render(force) {
+  if (!S) return;
+  const r = route();
+  updateAccount();
+  if (!force) {
+    if (FORM_ROUTES.has(r.name)) return;               // no pisar lo que se está escribiendo
+    if ($("#dlg").open) return;
+  }
+  const sig = r.name + "|" + (r.num || "") + "|" + changeMode + "|" + JSON.stringify([S.topics, S.me, S.settings, S.authenticated]);
+  if (!force && sig === lastSig) return;
+  lastSig = sig;
+
+  if (r.name === "home") return viewHome(force);
+  const app = $("#app");
+  app.replaceChildren();
+  if (r.name === "topic") viewTopic(app, r, force);
+  else if (r.name === "entrar") viewEnter(app);
+  else if (r.name === "consignas") viewRules(app);
+  else if (r.name === "indicaciones") viewGuide(app);
+  else if (r.name === "perfil") viewProfile(app);
+}
+
+function renderFatal(msg) {
+  $("#app").replaceChildren(h("div", { class: "panel empty stack" },
+    h("p", {}, msg),
+    h("button", { class: "btn btn-primary", onclick: () => { $("#app").replaceChildren(h("p", { class: "loading" }, "Cargando grupos…")); refresh(); } }, "Reintentar")));
+}
+
+function updateAccount() {
+  const a = $("#account");
+  if (S.authenticated) {
+    const initials = S.me.full_name.split(" ").filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join("");
+    a.textContent = initials;
+    a.href = "#/perfil";
+    a.setAttribute("aria-label", `Mi cuenta: ${S.me.full_name}`);
+  } else {
+    a.textContent = "Entrar";
+    a.href = "#/entrar";
+    a.removeAttribute("aria-label");
+  }
+}
+
+// ---------------------------------------------------------------- helpers de datos
+const topicByNum = (n) => S.topics.find((t) => t.number === n);
+const myGroup = () => (S.authenticated ? S.me.group : null);
+
+function allStudents() {
+  const out = [];
+  for (const t of S.topics) for (const g of t.groups) for (const m of g.members || []) out.push({ name: m.name, topic: t, group: g });
+  return out;
+}
+
+function closedNotices() {
+  const n = [];
+  if (!S.settings.registration_open) n.push("La inscripción está cerrada.");
+  if (!S.settings.group_changes_open) n.push("Los cambios de grupo están cerrados.");
+  return n.length ? h("p", { class: "notice" }, n.join(" ")) : null;
+}
+
+function shareLink(topicNum, groupNum) {
+  const url = `${location.origin}${location.pathname}#/tema/${topicNum}/grupo/${groupNum}`;
+  const t = topicByNum(topicNum);
+  const text = `Sumate a mi grupo del trabajo práctico: Tema ${topicNum}, Grupo ${groupNum} (${t ? t.title : ""}). Entrá acá: ${url}`;
+  return `https://wa.me/?text=${encodeURIComponent(text)}`;
+}
+
+// ---------------------------------------------------------------- acciones de grupo
+async function leaveGroup() {
+  const g = myGroup();
+  if (!g) return;
+  const ok = await confirmDlg("Abandonar grupo",
+    `Vas a salir del Grupo ${g.group_number} del Tema ${g.topic_number}. Tu lugar queda libre para otra persona.`,
+    "Abandonar grupo", true);
+  if (ok) await act(() => api("leave_group"), "Saliste del grupo.");
+}
+
+async function joinGroup(topic, group) {
+  if (!S.authenticated) { nextStore.set(`#/tema/${topic.number}/grupo/${group.number}`); go("#/entrar"); return; }
+  const g = myGroup();
+  const title = g ? "Cambiar de grupo" : "Unirme al grupo";
+  const msg = g
+    ? `Vas a salir del Grupo ${g.group_number} del Tema ${g.topic_number} y pasar al Grupo ${group.number} del Tema ${topic.number}.`
+    : `Vas a unirte al Grupo ${group.number} del Tema ${topic.number}.`;
+  if (!(await confirmDlg(title, msg, g ? "Cambiarme" : "Unirme"))) return;
+  const r = await act(() => api("join_group", { group_id: group.id }),
+    (x) => `Ya estás en el Tema ${x.topic_number}, Grupo ${x.group_number}.`);
+  if (r) { changeMode = false; go(`#/tema/${r.topic_number}/grupo/${r.group_number}`); }
+}
+
+async function createGroup(topic) {
+  if (!S.authenticated) { nextStore.set(`#/tema/${topic.number}`); go("#/entrar"); return; }
+  const g = myGroup();
+  const msg = `Se crea un grupo nuevo en el Tema ${topic.number} y quedás como primer integrante.` +
+    (g ? ` Vas a salir del Grupo ${g.group_number} del Tema ${g.topic_number}.` : "");
+  if (!(await confirmDlg("Crear nuevo grupo", msg, "Crear grupo"))) return;
+  const r = await act(() => api("create_group", { topic_id: topic.id }),
+    (x) => `Creaste el Grupo ${x.group_number}. Invitá a tus compañeros.`);
+  if (r) { changeMode = false; go(`#/tema/${r.topic_number}/grupo/${r.group_number}`); }
+}
+
+// ---------------------------------------------------------------- vista: inicio
+async function doLogout(msg = "Sesión cerrada.") {
+  try { await api("logout"); } catch { /* igual se cierra localmente */ }
+  tokenStore.set(null);
+  wasAuth = false;
+  toast(msg);
+  await refresh();
+  go("#/");
+}
+
+function whoLine() {
+  return h("p", { class: "who" }, "Si este no es tu nombre, ",
+    h("button", { class: "link", type: "button", onclick: () => doLogout("Listo, saliste.") }, "salí y volvé a entrar con tu cédula"), ".");
+}
+
+function currentPanel() {
+  if (!S.authenticated) {
+    return h("section", { class: "panel stack" },
+      h("h2", {}, "Elegí tu grupo"),
+      h("p", { class: "muted" }, "Entrá con tu número de cédula para ver quiénes integran cada grupo y sumarte a uno."),
+      h("a", { class: "btn btn-primary btn-block", href: "#/entrar" }, "Entrar con mi cédula"));
+  }
+  const g = myGroup();
+  if (!g) {
+    return h("section", { class: "panel current stack" },
+      h("p", { class: "hello" }, `Hola, ${S.me.full_name}`),
+      h("p", { class: "muted" }, "Todavía no estás en un grupo."),
+      h("p", { class: "muted" }, "Elegí un tema de la lista y unite a un grupo con lugar, o creá uno nuevo."),
+      whoLine());
+  }
+  const st = statusOf(g.count);
+  const open = S.settings.group_changes_open && !g.locked;
+  return h("section", { class: `panel current stack ${st.cls}` },
+    h("p", { class: "hello" }, `Hola, ${S.me.full_name}`),
+    h("p", { class: "muted" }, "Actualmente estás en:"),
+    h("p", { class: "where" }, `Tema ${g.topic_number} — Grupo ${g.group_number}`),
+    h("p", {}, g.topic_title),
+    h("p", { class: "count" }, h("b", {}, `${g.count}/${LIMITS.max}`), " integrantes  ", h("span", { class: "status" }, st.label)),
+    g.locked ? h("p", { class: "notice" }, "Tu grupo está cerrado por el administrador. Para cambiarte, hablá con él.") : null,
+    changeMode && open ? h("p", { class: "notice" }, "Elegí el tema y tocá «Cambiarme a este grupo». Tu lugar actual se libera al cambiarte.") : null,
+    h("div", { class: "row" },
+      h("a", { class: "btn btn-primary", href: `#/tema/${g.topic_number}/grupo/${g.group_number}` }, "Ver mi grupo"),
+      open ? h("button", { class: "btn btn-line", onclick: leaveGroup }, "Abandonar grupo") : null,
+      open ? h("button", {
+        class: "btn btn-line",
+        onclick: () => { changeMode = true; render(true); $("#topics-title").scrollIntoView({ behavior: "smooth", block: "start" }); },
+      }, "Cambiar de grupo") : null),
+    g.locked ? null : h("a", { class: "link", href: shareLink(g.topic_number, g.group_number), target: "_blank", rel: "noopener" }, "Invitar a mi grupo por WhatsApp"),
+    whoLine());
+}
+
+function phonePanel() {
+  const form = h("form", { class: "panel stack", novalidate: true },
+    h("h2", {}, "Falta tu teléfono"),
+    h("p", { class: "muted" }, "El administrador lo necesita para poder contactarte. Solo lo ve él."),
+    field("f-tel", "Teléfono", { type: "tel", inputmode: "tel", autocomplete: "tel", maxlength: 20 }, "Ejemplo: 0981 123 456"),
+    h("p", { class: "form-error", role: "alert" }),
+    h("button", { class: "btn btn-primary btn-block", type: "submit" }, "Guardar teléfono"));
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const tel = form.querySelector("#f-tel").value;
+    if (!validPhone(tel)) return formError(form, "Revisá el teléfono. Ejemplo: 0981 123 456.", "f-tel");
+    submitForm(form, async () => {
+      await api("update_profile", { phone: tel });
+      toast("Teléfono guardado.");
+      await refresh();
+    });
+  });
+  return form;
+}
+
+function topicCard(t) {
+  const students = t.groups.reduce((a, g) => a + g.count, 0);
+  const g = myGroup();
+  const mine = g && g.topic_number === t.number;
+  return h("li", {},
+    h("a", { class: "topic", href: `#/tema/${t.number}` },
+      h("span", { class: "topic-num", "aria-hidden": "true" }, t.number),
+      h("span", { class: "topic-title" }, h("span", { class: "sr" }, `Tema ${t.number}: `), t.title),
+      h("span", { class: "topic-foot" },
+        h("span", { class: "left" },
+          h("span", { class: "topic-stats" },
+            h("span", {}, h("b", {}, t.groups.length), t.groups.length === 1 ? " grupo" : " grupos"),
+            h("span", {}, h("b", {}, students), students === 1 ? " estudiante" : " estudiantes")),
+          mine ? h("span", { class: "mine-tag" }, `Tu grupo: ${g.group_number}`) : null),
+        h("span", { class: "btn btn-line" }, "Ver grupos"))));
+}
+
+function searchResults(q) {
+  const f = fold(q);
+  const wrap = h("div", { class: "stack" });
+  const people = S.authenticated ? allStudents().filter((s) => fold(s.name).includes(f)).slice(0, 30) : [];
+  const gm = f.match(/^grupo\s*(\d+)$/);
+  const groups = gm ? S.topics.flatMap((t) => t.groups.filter((g) => g.number === Number(gm[1])).map((g) => ({ t, g }))) : [];
+  if (people.length) {
+    wrap.append(h("section", { class: "panel" },
+      h("h2", {}, "Estudiantes"),
+      h("ul", { class: "results" }, people.map((p) =>
+        h("li", {}, h("a", { href: `#/tema/${p.topic.number}/grupo/${p.group.number}` },
+          p.name, h("span", { class: "sub" }, `Tema ${p.topic.number}, Grupo ${p.group.number}`)))))));
+  }
+  if (groups.length) {
+    wrap.append(h("section", { class: "panel" },
+      h("h2", {}, "Grupos"),
+      h("ul", { class: "results" }, groups.map(({ t, g }) =>
+        h("li", {}, h("a", { href: `#/tema/${t.number}/grupo/${g.number}` },
+          `Tema ${t.number}, Grupo ${g.number}`, h("span", { class: "sub" }, `${g.count}/${LIMITS.max} integrantes, ${statusOf(g.count).label.toLowerCase()}`)))))));
+  }
+  if (!S.authenticated && f && !/^\d+$/.test(f)) {
+    wrap.append(h("p", { class: "muted small" }, "Para buscar compañeros por nombre, primero entrá con tu cédula."));
+  }
+  return wrap;
+}
+
+function viewHome(force) {
+  const app = $("#app");
+  let shell = $("#home-shell");
+  if (!shell || force) {
+    const input = h("input", {
+      type: "search", id: "q", placeholder: "Buscar tema, grupo o compañero", autocomplete: "off",
+      "aria-label": "Buscar tema, grupo o compañero",
+      oninput: (e) => { query = e.target.value; fillHome(); },
+    });
+    input.value = query;
+    shell = h("div", { id: "home-shell", class: "stack" },
+      h("div", { id: "home-notices" }),
+      h("div", { id: "home-current" }),
+      h("div", { id: "home-phone" }),
+      h("section", { class: "panel guide-card" },
+        h("div", { class: "stack" },
+          h("h2", {}, "Indicaciones del trabajo"),
+          h("p", { class: "muted small" }, "Estructura, caso paraguayo obligatorio y requisitos de entrega.")),
+        h("a", { class: "btn btn-line", href: "#/indicaciones" }, "Ver indicaciones")),
+      h("div", { class: "search" }, svg(ICON_SEARCH), input),
+      h("div", { id: "home-results" }),
+      h("a", { class: "btn btn-line btn-block", href: "#/consignas" }, "Consignas del trabajo práctico"),
+      h("h2", { id: "topics-title" }, "Temas"),
+      h("ul", { class: "topics", id: "home-topics" }));
+    app.replaceChildren(shell);
+  }
+  fillHome();
+}
+
+function fillHome() {
+  $("#home-notices").replaceChildren(closedNotices() || "");
+  $("#home-current").replaceChildren(currentPanel());
+  const ph = $("#home-phone");
+  const needPhone = S.authenticated && S.me.phone_missing;
+  if (needPhone && !ph.firstChild) ph.append(phonePanel());   // no se redibuja: no borra lo que se escribe
+  if (!needPhone) ph.replaceChildren();
+  const f = fold(query);
+  $("#home-results").replaceChildren(f ? searchResults(query) : "");
+  const topics = f
+    ? S.topics.filter((t) => fold(t.title).includes(f) || String(t.number) === f || fold(`tema ${t.number}`) === f)
+    : S.topics;
+  const list = $("#home-topics");
+  list.replaceChildren(...topics.map(topicCard));
+  if (!topics.length) list.append(h("li", { class: "muted" }, "Ningún tema coincide con la búsqueda."));
+}
+
+// ---------------------------------------------------------------- vista: tema
+function seatMeter(count) {
+  const seats = [];
+  for (let i = 1; i <= LIMITS.max; i++) {
+    seats.push(h("span", { class: `seat${i <= count ? " on" : ""}${i === LIMITS.min + 1 ? " gap" : ""}` }));
+  }
+  return h("div", { class: "seats", "aria-hidden": "true", title: `Mínimo ${LIMITS.min}, máximo ${LIMITS.max}` }, seats);
+}
+
+function groupCard(topic, g) {
+  const st = statusOf(g.count);
+  const my = myGroup();
+  const isMine = !!(my && String(my.group_id) === String(g.id));
+  const full = g.count >= LIMITS.max;
+  const open = S.settings.group_changes_open;
+  const myLocked = !!(my && my.locked);
+
+  let actions;
+  if (isMine && g.locked) {
+    actions = [
+      h("button", { class: "btn btn-line", disabled: true }, "Estás en este grupo"),
+      h("p", { class: "muted small", style: "margin:0" }, "Grupo cerrado por el administrador."),
+    ];
+  } else if (isMine) {
+    actions = [
+      h("button", { class: "btn btn-line", disabled: true }, "Estás en este grupo"),
+      h("a", { class: "btn btn-primary", href: shareLink(topic.number, g.number), target: "_blank", rel: "noopener" }, "Invitar por WhatsApp"),
+      h("button", { class: "btn btn-danger", onclick: leaveGroup, disabled: !open }, "Abandonar grupo"),
+    ];
+  } else if (g.locked) {
+    actions = [h("button", { class: "btn btn-line", disabled: true }, "Grupo cerrado")];
+  } else if (full) {
+    actions = [h("button", { class: "btn btn-line", disabled: true }, "Grupo completo")];
+  } else if (myLocked) {
+    actions = [h("button", { class: "btn btn-line", disabled: true }, "Tu grupo está cerrado")];
+  } else if (!open && S.authenticated) {
+    actions = [h("button", { class: "btn btn-line", disabled: true }, "Cambios cerrados")];
+  } else {
+    actions = [h("button", { class: "btn btn-primary", onclick: () => joinGroup(topic, g) },
+      my ? "Cambiarme a este grupo" : "Unirme")];
+  }
+
+  let people;
+  if (!S.authenticated) {
+    people = h("p", { class: "muted small" }, "Ingresá para ver los nombres de los integrantes.");
+  } else if (!g.members.length) {
+    people = h("p", { class: "muted small" }, "Todavía no tiene integrantes.");
+  } else {
+    people = h("ol", { class: "members" }, g.members.map((m) =>
+      h("li", {}, m.name, m.is_me ? h("span", { class: "you" }, "vos") : null)));
+  }
+
+  return h("article", { class: `group ${st.cls}${isMine ? " is-mine" : ""}`, id: `grupo-${g.number}`, "aria-label": `Grupo ${g.number}` },
+    h("div", { class: "group-top" },
+      h("h3", { class: "group-name" }, `Grupo ${g.number}`),
+      h("span", { class: "count" }, h("b", {}, `${g.count}/${LIMITS.max}`), " integrantes")),
+    seatMeter(g.count),
+    h("p", { style: "margin:0" }, "Estado: ", h("span", { class: "status" }, st.label),
+      g.locked ? h("span", { class: "lock" }, "Cerrado") : null),
+    people,
+    h("div", { class: "actions" }, actions));
+}
+
+function viewTopic(app, r, force) {
+  const t = topicByNum(r.num);
+  if (!t) {
+    app.append(h("div", { class: "panel empty stack" }, h("p", {}, "Ese tema no existe."), h("a", { class: "btn btn-primary", href: "#/" }, "Ver todos los temas")));
+    return;
+  }
+  const canCreate = S.settings.group_changes_open || !S.authenticated;
+  app.append(h("div", { class: "stack" },
+    h("a", { class: "back", href: "#/" }, h("span", { "aria-hidden": "true" }, "‹"), "Todos los temas"),
+    h("div", { class: "topic-head" }, h("div", { class: "num" }, `Tema ${t.number}`), h("h2", {}, t.title)),
+    h("a", { class: "link", href: "#/indicaciones" }, "Ver las indicaciones del trabajo práctico"),
+    t.description ? h("p", { class: "muted" }, t.description) : null,
+    closedNotices(),
+    h("p", { class: "muted small" },
+      `${plural(t.groups.length, "grupo", "grupos")}. Cada grupo necesita entre ${LIMITS.min} y ${LIMITS.max} integrantes.`),
+    h("button", { class: "btn btn-primary btn-block", onclick: () => createGroup(t), disabled: !canCreate }, "+ Crear nuevo grupo"),
+    h("a", { class: "link", href: "#/consignas" }, "Ver las consignas del trabajo práctico"),
+    t.groups.length
+      ? h("div", { class: "groups" }, t.groups.map((g) => groupCard(t, g)))
+      : h("div", { class: "panel empty" }, h("p", { class: "muted" }, "Todavía no hay grupos en este tema. Creá el primero."))));
+
+  if (force && r.group) {
+    const el = document.getElementById(`grupo-${r.group}`);
+    if (el) requestAnimationFrame(() => { el.scrollIntoView({ block: "center" }); el.classList.add("flash"); });
+  }
+}
+
+// ---------------------------------------------------------------- formularios
+function field(id, label, attrs = {}, hint) {
+  return h("div", { class: "field" },
+    h("label", { for: id }, label),
+    h("input", { id, name: id, ...attrs }),
+    hint ? h("span", { class: "hint", id: `${id}-hint` }, hint) : null);
+}
+
+function formError(form, msg, fieldId) {
+  form.querySelector(".form-error").textContent = msg;
+  form.querySelectorAll("input").forEach((i) => i.removeAttribute("aria-invalid"));
+  if (fieldId) { const i = form.querySelector(`#${fieldId}`); i.setAttribute("aria-invalid", "true"); i.focus(); }
+}
+
+async function submitForm(form, fn) {
+  if (busy) return;
+  const btn = form.querySelector("button[type=submit]");
+  busy = true; btn.disabled = true;
+  try { await fn(); }
+  catch (e) { formError(form, e.message); }
+  finally { busy = false; btn.disabled = false; }
+}
+
+function afterLogin(msg) {
+  wasAuth = true;
+  toast(msg);
+  const next = nextStore.get();
+  nextStore.set(null);
+  refresh().then(() => go(next || "#/"));
+}
+
+const privacyNote = () => h("p", { class: "privacy" }, svg(ICON_LOCK),
+  h("span", {}, "Tu cédula y tu teléfono solo los ve el administrador. Tus compañeros ven únicamente tu nombre y tu grupo."));
+
+function viewEnter(app) {
+  if (S.authenticated) { go("#/"); return; }
+  let step = 1;           // 1: cédula  2: completar datos
+  let askedCed = "";
+  const extra = h("div", { class: "stack", hidden: true },
+    h("p", { class: "notice", id: "e-msg" }),
+    field("e-name", "Nombre y apellido", { autocomplete: "name", maxlength: 80 }),
+    field("e-tel", "Teléfono", { type: "tel", inputmode: "tel", autocomplete: "tel", maxlength: 20 }, "Ejemplo: 0981 123 456"));
+  const btn = h("button", { class: "btn btn-primary btn-block", type: "submit" }, "Entrar");
+  const form = h("form", { class: "panel stack", novalidate: true },
+    h("h2", {}, "Entrar"),
+    field("e-ced", "Tu número de cédula", { inputmode: "numeric", autocomplete: "off", maxlength: 20, class: "big" }, "Solo los números, con o sin puntos."),
+    extra,
+    h("p", { class: "form-error", role: "alert" }),
+    btn,
+    privacyNote());
+
+  const ced = form.querySelector("#e-ced");
+  const backToStep1 = () => { step = 1; extra.hidden = true; btn.textContent = "Entrar"; };
+  ced.addEventListener("input", () => { if (step === 2 && cedDigits(ced.value) !== askedCed) backToStep1(); });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    formError(form, "");
+    if (!validCedula(ced.value)) return formError(form, "Escribí tu número de cédula.", "e-ced");
+
+    if (step === 1) {
+      submitForm(form, async () => {
+        try {
+          const r = await api("enter", { national_id: ced.value });
+          tokenStore.set(r.token);
+          afterLogin(`Hola, ${r.full_name.split(" ")[0]}.`);
+        } catch (err) {
+          if (err.code !== "NOT_REGISTERED") throw err;
+          if (!S.settings.registration_open) {
+            throw new Error("No encontramos esa cédula y la inscripción ya está cerrada. Consultá al administrador.");
+          }
+          askedCed = cedDigits(ced.value);
+          step = 2;
+          form.querySelector("#e-msg").textContent =
+            `La cédula ${fmtCed(askedCed)} todavía no está registrada. Completá tu nombre y teléfono para registrarte.`;
+          extra.hidden = false;
+          btn.textContent = "Registrarme";
+          form.querySelector("#e-name").focus();
+        }
+      });
+      return;
+    }
+
+    const v = (id) => form.querySelector(`#${id}`).value;
+    if (!validName(v("e-name"))) return formError(form, "Escribí tu nombre y apellido, solo con letras.", "e-name");
+    if (!validPhone(v("e-tel"))) return formError(form, "Revisá el teléfono. Ejemplo: 0981 123 456.", "e-tel");
+    submitForm(form, async () => {
+      const r = await api("register", { full_name: v("e-name"), national_id: ced.value, phone: v("e-tel") });
+      tokenStore.set(r.token);
+      afterLogin(r.existed ? `Ya estabas registrado. Hola, ${r.full_name.split(" ")[0]}.` : "Registro completo. Ya podés elegir tu grupo.");
+    });
+  });
+
+  app.append(h("div", { class: "stack" },
+    h("a", { class: "back", href: "#/" }, h("span", { "aria-hidden": "true" }, "‹"), "Volver"),
+    form));
+  ced.focus();
+}
+
+// Lineamientos de la cátedra (texto fijo)
+const GUIDE = {
+  subject: "Derecho Político",
+  value: "10 puntos",
+  structure: [
+    { title: "Portada", text: "Datos institucionales, asignatura, título del tema y nómina completa de los integrantes (8 a 12 alumnos)." },
+    { title: "Introducción", text: "Justificación del tema y objetivos." },
+    { title: "Desarrollo teórico-doctrinario", text: "Sustento conceptual basado en la bibliografía oficial y complementaria de la cátedra." },
+    { title: "Análisis de caso / casuística nacional", required: true,
+      text: "El grupo deberá seleccionar y desarrollar al menos un caso real, noticia de actualidad o situación concreta de la vida cotidiana institucional en Paraguay que ejemplifique directamente el tema teórico analizado.",
+      extra: "Se debe desglosar cómo la teoría política se aplica, se viola o se tensiona en la realidad del país." },
+    { title: "Conclusiones y propuestas", text: "Reflexión crítica de cada integrante del grupo sobre el impacto del tema en la consolidación del Estado de derecho paraguayo." },
+    { title: "Bibliografía y fuentes", text: "Inclusión de bibliografía jurídica y hemerográfica/periodística de los casos analizados, según corresponda." },
+  ],
+  form: [
+    ["Integrantes", "Mínimo 8, máximo 12"],
+    ["Extensión", "De 10 a 15 páginas, sin contar carátula ni bibliografía"],
+    ["Tipografía", "Arial o Times New Roman, tamaño 12"],
+    ["Interlineado", "1,5"],
+    ["Alineación", "Texto justificado"],
+    ["Entrega", "Formato PDF"],
+  ],
+};
+
+function viewGuide(app) {
+  const g = myGroup();
+  app.append(h("div", { class: "stack" },
+    h("a", { class: "back", href: "#/" }, h("span", { "aria-hidden": "true" }, "‹"), "Volver"),
+    h("div", { class: "topic-head stack" },
+      h("h2", { style: "font-size:clamp(1.9rem,7.5vw,2.5rem)" }, "Indicaciones del trabajo práctico"),
+      h("div", { class: "tags" },
+        h("span", { class: "tag" }, GUIDE.subject),
+        h("span", { class: "tag" }, `Valor: ${GUIDE.value}`)),
+      g ? h("p", { class: "muted" }, `Tu grupo: Tema ${g.topic_number}, Grupo ${g.group_number}. ${g.topic_title}.`) : null),
+
+    h("section", { class: "panel stack" },
+      h("h2", {}, "Estructura del trabajo escrito"),
+      h("ol", { class: "steps" }, GUIDE.structure.map((it) =>
+        h("li", { class: it.required ? "key" : "" },
+          h("h3", {}, it.title, it.required ? h("span", { class: "tag req", style: "margin-left:8px" }, "Obligatorio") : null),
+          h("div", {}, h("p", {}, it.text), it.extra ? h("p", {}, it.extra) : null))))),
+
+    h("section", { class: "panel stack" },
+      h("h2", {}, "Requisitos de forma para la entrega"),
+      h("dl", { class: "facts" }, GUIDE.form.map(([k, v]) => h("div", {}, h("dt", {}, k), h("dd", {}, v))))),
+
+    h("div", { class: "row no-print" },
+      h("a", { class: "btn btn-primary", href: g ? `#/tema/${g.topic_number}/grupo/${g.group_number}` : "#/" }, g ? "Ver mi grupo" : "Elegir tema y grupo"),
+      h("button", { class: "btn btn-line", onclick: () => window.print() }, "Imprimir o guardar en PDF"))));
+}
+
+function viewRules(app) {
+  const parts = [
+    ["Portada", "Datos institucionales, asignatura, título del tema y nómina completa de los integrantes (8 a 12 alumnos)."],
+    ["Introducción", "Justificación del tema y objetivos."],
+    ["Desarrollo teórico-doctrinario", "Sustento conceptual basado en la bibliografía oficial y complementaria de la cátedra."],
+    ["Análisis de caso / casuística nacional (obligatorio)",
+     "El grupo debe seleccionar y desarrollar al menos un caso real, noticia de actualidad o situación concreta de la vida cotidiana institucional en Paraguay que ejemplifique directamente el tema teórico analizado. Hay que desglosar cómo la teoría política se aplica, se viola o se tensiona en la realidad del país."],
+    ["Conclusiones y propuestas", "Reflexión crítica de cada integrante del grupo sobre el impacto del tema en la consolidación del Estado de derecho paraguayo."],
+    ["Bibliografía y fuentes", "Bibliografía jurídica y fuentes hemerográficas o periodísticas de los casos analizados, según corresponda."],
+  ];
+  const specs = [
+    ["Integrantes", `Mínimo ${LIMITS.min}, máximo ${LIMITS.max} por grupo.`],
+    ["Extensión", "Mínimo 10 páginas, máximo 15 (sin contar carátula ni bibliografía)."],
+    ["Tipografía", "Arial o Times New Roman 12."],
+    ["Interlineado", "1,5."],
+    ["Texto", "Justificado."],
+    ["Archivo", "PDF."],
+    ["Puntaje", "10 puntos."],
+  ];
+  app.append(h("div", { class: "stack" },
+    h("a", { class: "back", href: "#/" }, h("span", { "aria-hidden": "true" }, "‹"), "Volver"),
+    h("div", { class: "topic-head" },
+      h("div", { class: "num" }, "Derecho político"),
+      h("h2", {}, "Consignas del trabajo práctico")),
+    h("section", { class: "panel stack" },
+      h("h2", {}, "Estructura del trabajo escrito"),
+      h("ol", { class: "rules" }, parts.map(([t, d]) => h("li", {}, h("b", {}, t), d)))),
+    h("section", { class: "panel stack" },
+      h("h2", {}, "Requisitos de forma"),
+      h("ul", { class: "specs" }, specs.map(([k, v]) =>
+        h("li", {}, h("span", { class: "k" }, k), h("span", { class: "muted" }, v))))),
+    h("a", { class: "btn btn-primary btn-block", href: "#/" }, "Ver los temas y grupos")));
+}
+
+function viewProfile(app) {
+  if (!S.authenticated) { go("#/entrar"); return; }
+  const me = S.me;
+
+  const data = h("form", { class: "panel stack", novalidate: true },
+    h("h2", {}, "Mis datos"),
+    field("p-name", "Nombre y apellido", { autocomplete: "name", maxlength: 80, value: me.full_name }),
+    me.phone_missing
+      ? field("p-tel", "Teléfono", { type: "tel", inputmode: "tel", maxlength: 20 }, "Todavía no cargaste tu teléfono. Ejemplo: 0981 123 456")
+      : field("p-tel", "Teléfono nuevo", { type: "tel", inputmode: "tel", maxlength: 20, placeholder: "Dejalo vacío para no cambiarlo" },
+          `Teléfono actual: termina en ${String(me.phone_masked).replace(/•/g, "")}`),
+    h("p", { class: "small muted" }, `Cédula: termina en ${me.national_id_masked.replace(/•/g, "")}. Si está mal, avisale al administrador.`),
+    h("p", { class: "form-error", role: "alert" }),
+    h("button", { class: "btn btn-primary btn-block", type: "submit" }, "Guardar cambios"));
+  data.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = data.querySelector("#p-name").value;
+    const tel = data.querySelector("#p-tel").value.trim();
+    if (!validName(name)) return formError(data, "Escribí tu nombre y apellido, solo con letras.", "p-name");
+    if (tel && !validPhone(tel)) return formError(data, "Revisá el teléfono. Ejemplo: 0981 123 456.", "p-tel");
+    submitForm(data, async () => {
+      await api("update_profile", { full_name: name, phone: tel || null });
+      formError(data, "");
+      toast("Datos guardados.");
+      await refresh();
+      render(true);
+    });
+  });
+
+  const out = h("button", { class: "btn btn-danger btn-block", onclick: () => doLogout() }, "Salir");
+
+  app.append(h("div", { class: "stack" },
+    h("a", { class: "back", href: "#/" }, h("span", { "aria-hidden": "true" }, "‹"), "Volver"),
+    data, out, privacyNote()));
+}
+
+// ---------------------------------------------------------------- inicio
+if (!API) {
+  renderFatal("Falta configurar FUNCTION_URL en config.js.");
+} else {
+  refresh().then(schedule);
+}
+})();
+</script>
+</body>
+</html>
